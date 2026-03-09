@@ -46,12 +46,12 @@ const floatingIcons = [FaJava, FaJs, FaHtml5, FaReact, FaGitAlt, SiMysql, SiMong
 function SkillBar({ name, icon: Icon, level, color, delay }) {
   return (
     <motion.div
-      className="glass rounded-xl p-4 group neon-border"
+      className="glass rounded-2xl p-6 md:p-8 neon-border h-full flex flex-col"
       initial={{ opacity: 0, x: -30, filter: 'blur(8px)' }}
       whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ delay, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ scale: 1.03, boxShadow: `0 0 30px ${color}25` }}
+      whileHover={{ y: -5, boxShadow: 'var(--shadow-card)', borderColor: color }}
     >
       <div className="flex items-center gap-3 mb-3">
         <motion.div className="text-2xl" style={{ color }}
@@ -59,18 +59,18 @@ function SkillBar({ name, icon: Icon, level, color, delay }) {
           transition={{ type: 'spring', stiffness: 300 }}>
           <Icon />
         </motion.div>
-        <span className="font-semibold text-white text-sm">{name}</span>
-        <span className="ml-auto font-mono text-xs" style={{ color }}>{level}%</span>
+        <span className="font-semibold text-theme-text text-sm">{name}</span>
+        <span className="ml-auto font-mono text-xs" style={{ color: 'var(--text-muted)' }}>{level}%</span>
       </div>
-      <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+      <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--border-color)' }}>
         <motion.div className="h-full rounded-full relative"
-          style={{ background: `linear-gradient(90deg, ${color}, rgba(155,89,182,0.7))` }}
+          style={{ background: `linear-gradient(90deg, ${color}, var(--neon-purple))` }}
           initial={{ width: 0 }}
           whileInView={{ width: `${level}%` }}
           viewport={{ once: true }}
           transition={{ delay: delay + 0.25, duration: 1.1, ease: 'easeOut' }}>
           <motion.div className="absolute inset-0 rounded-full"
-            style={{ background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)', backgroundSize: '200% 100%' }}
+            style={{ background: 'linear-gradient(90deg, transparent, var(--glass-bg), transparent)', backgroundSize: '200% 100%' }}
             animate={{ backgroundPosition: ['-200% 0', '200% 0'] }}
             transition={{ duration: 2, repeat: Infinity, ease: 'linear', delay: delay + 1 }} />
         </motion.div>
@@ -83,7 +83,7 @@ function Skills() {
   const ref = useRef(null);
 
   return (
-    <div ref={ref} className="py-24 px-6" style={{ background: 'rgba(13,23,38,0.5)' }}>
+    <div ref={ref} className="py-24 px-6" style={{ background: 'var(--section-bg-alt)' }}>
       <div className="max-w-7xl mx-auto">
         {/* Header — centered */}
         <motion.div className="text-center mb-16"
@@ -92,7 +92,7 @@ function Skills() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}>
           <p className="font-mono text-cyan-400 text-sm mb-2 tracking-widest uppercase text-center">What I work with</p>
-          <h2 className="section-title gradient-text text-center">Technical Skills</h2>
+          <h2 id="skills-heading" className="section-title gradient-text text-center">Technical Skills</h2>
           <div className="w-16 h-1 mx-auto rounded-full mt-3"
             style={{ background: 'linear-gradient(90deg, #00d4ff, #9b59b6)' }} />
         </motion.div>
@@ -128,12 +128,14 @@ function Skills() {
           transition={{ delay: 0.3, duration: 0.6, type: "spring" }}>
           {floatingIcons.map((Icon, i) => (
             <motion.div key={i}
-              className="w-14 h-14 rounded-xl glass flex items-center justify-center"
-              style={{ border: '1px solid rgba(0,212,255,0.12)' }}
-              whileHover={{ scale: 1.25, borderColor: 'rgba(0,212,255,0.7)', boxShadow: '0 0 25px rgba(0,212,255,0.35)' }}
+              className="w-14 h-14 rounded-xl flex items-center justify-center relative overflow-hidden"
+              style={{ border: '1px solid var(--glass-border)', background: 'var(--dark-surface)', boxShadow: 'var(--shadow-card)' }}
+              whileHover={{ scale: 1.15, borderColor: 'var(--neon-blue)', boxShadow: '0 20px 40px var(--shadow-card)' }}
               animate={{ y: [0, -7, 0] }}
               transition={{ duration: 3 + i * 0.3, repeat: Infinity, ease: 'easeInOut', delay: i * 0.2 }}>
-              <Icon className="text-2xl text-cyan-400" />
+              
+              <div className="absolute inset-0 opacity-10" style={{ background: `radial-gradient(circle at center, var(--neon-blue), transparent)` }} />
+              <Icon className="text-2xl relative z-10" style={{ color: 'var(--neon-blue)' }} />
             </motion.div>
           ))}
         </motion.div>

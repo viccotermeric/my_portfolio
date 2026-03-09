@@ -16,13 +16,16 @@ function ParticleCanvas() {
     let W = canvas.offsetWidth, H = canvas.offsetHeight;
     canvas.width = W; canvas.height = H;
 
-    const COLORS = ['rgba(0,212,255,', 'rgba(155,89,182,', 'rgba(0,255,170,'];
+    const isLight = document.documentElement.classList.contains('light');
+    const COLORS = isLight 
+      ? ['rgba(59,130,246,', 'rgba(139,92,246,', 'rgba(16,185,129,'] // Elegant Light Tones
+      : ['rgba(0,212,255,', 'rgba(155,89,182,', 'rgba(0,255,170,'];
     const count = window.innerWidth < 768 ? 50 : 100;
     const particles = Array.from({ length: count }, () => ({
       x: Math.random() * W, y: Math.random() * H,
       vx: (Math.random() - 0.5) * 0.5, vy: (Math.random() - 0.5) * 0.5,
       r: Math.random() * 1.5 + 0.6,
-      alpha: Math.random() * 0.5 + 0.2,
+      alpha: isLight ? Math.random() * 0.3 + 0.1 : Math.random() * 0.5 + 0.2, // Softer in light mode
       color: COLORS[Math.floor(Math.random() * COLORS.length)],
     }));
 
@@ -95,11 +98,11 @@ function Hero() {
       {/* Floating ambient orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" aria-hidden="true">
         <motion.div className="absolute w-[600px] h-[600px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,255,0.05) 0%, transparent 70%)', top: '-5%', left: '-15%' }}
+          style={{ background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)', top: '-5%', left: '-15%' }}
           animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
           transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }} />
         <motion.div className="absolute w-[450px] h-[450px] rounded-full"
-          style={{ background: 'radial-gradient(circle, rgba(155,89,182,0.05) 0%, transparent 70%)', bottom: '5%', right: '-10%' }}
+          style={{ background: 'radial-gradient(circle, var(--accent-glow) 0%, transparent 70%)', bottom: '5%', right: '-10%' }}
           animate={{ x: [0, -35, 0], y: [0, 30, 0] }}
           transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }} />
       </div>
@@ -113,8 +116,8 @@ function Hero() {
           transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-8 glass neon-border"
         >
-          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: '#00d4ff', boxShadow: '0 0 8px #00d4ff' }} />
-          <span className="text-sm font-mono text-slate-400 tracking-wide">Available for internships</span>
+          <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--accent-main)', boxShadow: '0 0 8px var(--accent-glow)' }} />
+          <span className="text-sm font-mono text-theme-muted tracking-wide">Available for internships</span>
         </motion.div>
 
         {/* Name */}
@@ -125,8 +128,8 @@ function Hero() {
         >
           <h1 id="hero-heading" className="font-space font-bold leading-tight mb-2"
             style={{ fontSize: 'clamp(2.5rem, 8vw, 6rem)' }}>
-            <span className="text-white">Hi, I'm </span>
-            <span className="gradient-text" style={{ filter: 'drop-shadow(0 0 40px rgba(0,212,255,0.2))' }}>
+            <span className="text-theme-text">Hi, I'm </span>
+            <span className="gradient-text" style={{ filter: 'drop-shadow(0 0 40px var(--accent-glow))' }}>
               Rishabh Trivedi
             </span>
           </h1>
@@ -134,7 +137,7 @@ function Hero() {
 
         {/* Subtitle */}
         <motion.p
-          className="text-slate-400 mb-2 text-center w-full"
+          className="text-theme-muted mb-2 text-center w-full"
           style={{ fontSize: 'clamp(1rem, 2.2vw, 1.25rem)', letterSpacing: '0.02em' }}
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.7 }}
@@ -145,7 +148,7 @@ function Hero() {
         {/* Typing */}
         <motion.div className="mb-12 h-14 flex items-center justify-center"
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.85 }}>
-          <span className="font-mono text-xl md:text-2xl font-semibold tracking-wide" style={{ color: '#00d4ff' }}>
+          <span className="font-mono text-xl md:text-2xl font-semibold tracking-wide" style={{ color: 'var(--accent-main)' }}>
             &gt;&nbsp;
             <TypeAnimation
               sequence={['Web Developer', 2200, 'Java Programmer', 2200, 'Tech Enthusiast', 2200, 'Problem Solver', 2200]}
@@ -174,10 +177,10 @@ function Hero() {
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.3 }}>
           {['React', 'Java', 'JavaScript', 'MySQL', 'Git'].map((tech, i) => (
             <motion.span key={tech}
-              className="px-3 py-1 rounded-full text-xs font-mono glass neon-border text-slate-400"
+              className="px-3 py-1 rounded-full text-xs font-mono glass neon-border text-theme-muted"
               animate={{ y: [0, -4, 0] }}
               transition={{ duration: 3 + i * 0.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.2 }}
-              whileHover={{ scale: 1.15, color: '#00d4ff' }}>
+              whileHover={{ scale: 1.15, color: 'var(--accent-main)' }}>
               {tech}
             </motion.span>
           ))}
@@ -190,7 +193,7 @@ function Hero() {
         onClick={() => go('about')}
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.7, type: 'spring' }}
         aria-label="Scroll to About">
-        <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-slate-500 group-hover:text-cyan-400 transition-colors">
+        <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-theme-subtle group-hover:text-cyan-400 transition-colors">
           Scroll
         </span>
         <div className="w-5 h-8 border-2 border-slate-500/50 rounded-full flex justify-center p-1 relative backdrop-blur-sm group-hover:border-cyan-400 transition-colors duration-300">

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FiMenu, FiX } from 'react-icons/fi';
+import { FiMenu, FiX, FiSun, FiMoon } from 'react-icons/fi';
 
 const navLinks = [
   { label: 'Home', id: 'home' },
@@ -23,9 +23,18 @@ const scrollTo = (id) => {
 function Navbar({ scrollY }) {
   const [activeSection, setActiveSection] = useState('home');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState('dark');
   const isScrollingManually = useRef(false);
   const scrollTimeout = useRef(null);
   const scrolled = scrollY > 40;
+
+  useEffect(() => {
+    if (theme === 'light') {
+      document.documentElement.classList.add('light');
+    } else {
+      document.documentElement.classList.remove('light');
+    }
+  }, [theme]);
 
   useEffect(() => {
     const ids = navLinks.map(l => l.id);
@@ -56,6 +65,10 @@ function Navbar({ scrollY }) {
     scrollTo(id); 
   };
 
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
+
   return (
     <motion.nav
       initial={{ y: -80, opacity: 0 }}
@@ -63,10 +76,10 @@ function Navbar({ scrollY }) {
       transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       className="fixed top-0 left-0 right-0 z-50"
       style={{
-        background: scrolled ? 'rgba(5,10,20,0.88)' : 'transparent',
+        background: scrolled ? 'var(--nav-bg)' : 'transparent',
         backdropFilter: scrolled ? 'blur(24px) saturate(180%)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(0,212,255,0.1)' : 'none',
-        boxShadow: scrolled ? '0 2px 24px rgba(0,0,0,0.5)' : 'none',
+        borderBottom: scrolled ? '1px solid var(--glass-border)' : 'none',
+        boxShadow: scrolled ? 'var(--shadow-card)' : 'none',
         transition: 'background 0.2s, backdrop-filter 0.2s, border-color 0.2s, box-shadow 0.2s',
       }}
     >
@@ -89,16 +102,16 @@ function Navbar({ scrollY }) {
                 key={link.id}
                 onClick={() => go(link.id)}
                 className="relative px-3.5 py-2 text-sm font-medium transition-colors duration-150"
-                style={{ color: isActive ? '#00d4ff' : '#94a3b8' }}
+                style={{ color: isActive ? 'var(--neon-blue)' : 'var(--nav-text)' }}
               >
-                <span className="relative z-10 hover:text-cyan-400 transition-colors duration-150">
+                <span className="relative z-10 hover:text-cyan-400 dark:hover:text-cyan-400 transition-colors duration-150">
                   {link.label}
                 </span>
                 {isActive && (
                   <motion.span
                     layoutId="nav-underline"
                     className="absolute bottom-1 left-3 right-3 h-px rounded-full"
-                    style={{ background: 'linear-gradient(90deg, #00d4ff, #9b59b6)' }}
+                    style={{ background: 'linear-gradient(90deg, var(--neon-blue), var(--neon-purple))' }}
                     transition={{ type: 'spring', stiffness: 700, damping: 30 }}
                   />
                 )}
@@ -108,21 +121,77 @@ function Navbar({ scrollY }) {
           <motion.button
             onClick={() => go('contact')}
             className="ml-2 px-5 py-2 rounded-full text-sm font-semibold text-white"
-            style={{ background: 'linear-gradient(135deg, #00d4ff, #9b59b6)', boxShadow: '0 0 16px rgba(0,212,255,0.28)' }}
-            whileHover={{ scale: 1.06, boxShadow: '0 0 28px rgba(0,212,255,0.5)' }}
+            style={{ background: 'linear-gradient(135deg, var(--neon-blue), var(--neon-purple))', boxShadow: '0 10px 20px var(--accent-glow)' }}
+            whileHover={{ scale: 1.06, boxShadow: '0 15px 30px var(--accent-glow)' }}
             whileTap={{ scale: 0.94 }}
           >
             Hire Me
           </motion.button>
+          
+          {/* Theme Toggle Button */}
+          <motion.button
+            onClick={toggleTheme}
+            className="ml-3 p-2 rounded-full relative overflow-hidden"
+            style={{ 
+              background: 'var(--dark-bg)',
+              color: theme === 'light' ? '#f59e0b' : 'var(--neon-blue)',
+              border: '1px solid var(--glass-border)',
+              boxShadow: 'var(--shadow-card)'
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label="Toggle theme"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={theme === 'light' ? 'sun' : 'moon'}
+                initial={{ y: -20, opacity: 0, rotate: -90 }}
+                animate={{ y: 0, opacity: 1, rotate: 0 }}
+                exit={{ y: 20, opacity: 0, rotate: 90 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+                className="flex items-center justify-center w-5 h-5"
+              >
+                {theme === 'light' ? <FiSun size={18} /> : <FiMoon size={18} />}
+              </motion.div>
+            </AnimatePresence>
+          </motion.button>
         </div>
 
-        {/* Mobile button */}
-        <motion.button
-          className="md:hidden p-2 text-slate-300"
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Toggle menu"
-          whileTap={{ scale: 0.88 }}
-        >
+        {/* Mobile controls */}
+        <div className="md:hidden flex items-center gap-3">
+          <motion.button
+            onClick={toggleTheme}
+            className="p-1.5 rounded-full relative overflow-hidden flex items-center justify-center w-8 h-8"
+            style={{ 
+              background: 'var(--dark-bg)',
+              color: theme === 'light' ? '#f59e0b' : 'var(--neon-blue)',
+              border: '1px solid var(--glass-border)',
+              boxShadow: 'var(--shadow-card)'
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label="Toggle theme"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={theme === 'light' ? 'sun' : 'moon'}
+                initial={{ y: -20, opacity: 0, rotate: -90 }}
+                animate={{ y: 0, opacity: 1, rotate: 0 }}
+                exit={{ y: 20, opacity: 0, rotate: 90 }}
+                transition={{ duration: 0.25, ease: 'easeInOut' }}
+              >
+                {theme === 'light' ? <FiSun size={16} /> : <FiMoon size={16} />}
+              </motion.div>
+            </AnimatePresence>
+          </motion.button>
+
+          <motion.button
+            className="p-2 text-slate-300"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+            style={{ color: 'var(--text-primary)' }}
+            whileTap={{ scale: 0.88 }}
+          >
           <AnimatePresence mode="wait">
             {menuOpen
               ? <motion.span key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.12 }}><FiX size={22} /></motion.span>
@@ -130,6 +199,7 @@ function Navbar({ scrollY }) {
             }
           </AnimatePresence>
         </motion.button>
+        </div>
       </div>
 
       {/* Mobile menu */}
@@ -145,17 +215,17 @@ function Navbar({ scrollY }) {
             className="md:hidden mx-3 mb-3 rounded-2xl overflow-hidden"
           >
             <div className="flex flex-col p-3 gap-1"
-              style={{ background: 'rgba(5,10,20,0.97)', border: '1px solid rgba(0,212,255,0.12)', backdropFilter: 'blur(20px)', borderRadius: '16px' }}>
+              style={{ background: 'var(--nav-menu-bg)', border: `1px solid ${theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(0,212,255,0.12)'}`, backdropFilter: 'blur(20px)', borderRadius: '16px' }}>
               {navLinks.map((link) => (
                 <button key={link.id} onClick={() => go(link.id)}
                   className="text-left px-4 py-3 rounded-xl text-sm font-medium transition-colors"
-                  style={{ color: activeSection === link.id ? '#00d4ff' : '#94a3b8', background: activeSection === link.id ? 'rgba(0,212,255,0.07)' : 'transparent' }}>
+                  style={{ color: activeSection === link.id ? 'var(--neon-blue)' : 'var(--nav-text)', background: activeSection === link.id ? 'var(--section-bg-alt)' : 'transparent' }}>
                   {link.label}
                 </button>
               ))}
               <button onClick={() => go('contact')}
                 className="mt-1 py-3 rounded-xl text-sm font-semibold text-white"
-                style={{ background: 'linear-gradient(135deg, #00d4ff, #9b59b6)' }}>
+                style={{ background: 'linear-gradient(135deg, var(--neon-blue), var(--neon-purple))' }}>
                 Hire Me
               </button>
             </div>

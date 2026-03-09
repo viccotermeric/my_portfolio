@@ -50,9 +50,9 @@ function TimelineItem({ item, index }) {
         <motion.div
           className="w-12 h-12 rounded-full flex items-center justify-center text-xl"
           style={{
-            background: `${item.color}20`,
-            border: `2px solid ${item.color}`,
-            boxShadow: `0 0 20px ${item.color}55`,
+            background: 'var(--dark-surface)',
+            border: `2px solid ${item.color}44`,
+            boxShadow: 'var(--shadow-card)',
           }}
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
@@ -68,7 +68,11 @@ function TimelineItem({ item, index }) {
       <div className="md:hidden flex-shrink-0" aria-hidden="true">
         <div
           className="w-10 h-10 rounded-full flex items-center justify-center text-lg"
-          style={{ background: `${item.color}20`, border: `2px solid ${item.color}` }}
+          style={{ 
+            background: 'var(--dark-surface)', 
+            border: `2px solid ${item.color}44`,
+            boxShadow: 'var(--shadow-card)' 
+          }}
         >
           {item.icon}
         </div>
@@ -78,23 +82,34 @@ function TimelineItem({ item, index }) {
       <div className={`flex-1 min-w-0 ${isLeft ? 'md:pr-16' : 'md:pl-16'}`}>
         <motion.div
           className="glass rounded-2xl p-5 md:p-6 transition-all duration-300"
-          style={{ border: `1px solid ${item.color}30` }}
-          whileHover={{ borderColor: `${item.color}70`, boxShadow: `0 10px 40px rgba(0,0,0,0.4), 0 0 30px ${item.color}15` }}
+          style={{ 
+            border: `1px solid var(--glass-border)`,
+            background: 'var(--dark-surface)',
+            boxShadow: 'var(--shadow-card)'
+          }}
+          whileHover={{ 
+            borderColor: 'var(--neon-blue)', 
+            y: -5,
+            boxShadow: '0 20px 40px var(--shadow-card)' 
+          }}
         >
-          <h3 className="font-bold text-white text-base md:text-lg mb-0.5">{item.degree}</h3>
+          <h3 className="font-bold text-theme-text text-base md:text-lg mb-0.5">{item.degree}</h3>
           <p className="font-semibold text-sm mb-2" style={{ color: item.color }}>{item.institution}</p>
-          <div className="flex flex-wrap gap-3 text-xs text-slate-400 mb-3">
+          <div className="flex flex-wrap gap-3 text-xs text-theme-subtle mb-3">
             <span className="flex items-center gap-1.5"><FiCalendar size={11} aria-hidden="true" /> {item.period}</span>
             <span className="flex items-center gap-1.5"><FiMapPin size={11} aria-hidden="true" /> {item.location}</span>
           </div>
-          <p className="text-slate-400 text-sm leading-relaxed mb-4">{item.description}</p>
+          <p className="text-theme-muted text-sm leading-relaxed mb-4">{item.description}</p>
           <div className="flex flex-wrap gap-2" role="list" aria-label="Key subjects">
             {item.highlights.map((h) => (
               <span
                 key={h}
                 role="listitem"
-                className="text-xs px-2.5 py-1 rounded-full font-mono"
-                style={{ background: `${item.color}12`, color: item.color, border: `1px solid ${item.color}28` }}
+                className="text-xs px-2.5 py-1 rounded-full font-medium text-theme-subtle"
+                style={{ 
+                  background: 'var(--dark-bg)', 
+                  border: `1px solid var(--glass-border)` 
+                }}
               >
                 {h}
               </span>
@@ -111,7 +126,7 @@ function TimelineItem({ item, index }) {
 
 function Education() {
   return (
-    <section className="py-20 md:py-28 px-4 md:px-6" style={{ background: 'rgba(13,23,38,0.5)' }} aria-labelledby="education-heading">
+    <section className="py-20 md:py-28 px-4 md:px-6" style={{ background: 'var(--section-bg-alt)' }} aria-labelledby="education-heading">
       <div className="max-w-5xl mx-auto">
         <motion.div
           className="text-center mb-14"

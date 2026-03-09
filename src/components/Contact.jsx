@@ -86,9 +86,9 @@ function Contact() {
         transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
       >
         <p className="font-mono text-cyan-400 text-sm mb-2 tracking-widest uppercase">Say hello</p>
-        <h2 className="section-title gradient-text">Get In Touch</h2>
+        <h2 id="contact-heading" className="section-title gradient-text">Get In Touch</h2>
         <div className="w-16 h-1 mx-auto rounded-full mt-3" style={{ background: 'linear-gradient(90deg, #00d4ff, #9b59b6)' }} />
-        <p className="text-slate-400 mt-4 max-w-xl mx-auto text-sm leading-relaxed">
+        <p className="text-theme-subtle mt-4 max-w-xl mx-auto text-sm leading-relaxed">
           I'm always open to discussing new opportunities, interesting projects, or just having a conversation about tech.
         </p>
       </motion.div>
@@ -102,10 +102,10 @@ function Contact() {
           transition={{ delay: 0.15, duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
           className="space-y-6"
         >
-          <h3 className="text-2xl font-bold text-white">
+          <h3 className="text-2xl font-bold text-theme-text">
             Let's work <span className="gradient-text">together</span>
           </h3>
-          <p className="text-slate-400 leading-relaxed text-sm">
+          <p className="text-theme-muted leading-relaxed text-sm">
             Whether you're looking for an intern, want to collaborate on a project, or just want to say hi — my inbox is always open!
           </p>
           <div className="space-y-4 mt-8">
@@ -119,12 +119,12 @@ function Contact() {
                 whileHover={{ x: 6 }}
               >
                 <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{ background: 'rgba(0,212,255,0.1)', border: '1px solid rgba(0,212,255,0.2)' }}>
-                  <Icon className="text-cyan-400" size={17} />
+                  style={{ background: 'var(--dark-bg)', border: '1px solid var(--border-color)' }}>
+                  <Icon className="text-accent-main" size={17} />
                 </div>
                 <div>
-                  <p className="text-xs text-slate-500 font-mono">{label}</p>
-                  <p className="text-slate-300 text-sm group-hover:text-cyan-400 transition-colors">{value}</p>
+                  <p className="text-xs text-theme-subtle font-mono">{label}</p>
+                  <p className="text-theme-muted text-sm group-hover:text-cyan-400 transition-colors">{value}</p>
                 </div>
               </motion.a>
             ))}
@@ -140,7 +140,7 @@ function Contact() {
         >
           <form onSubmit={handleSubmit} className="glass rounded-2xl p-5 md:p-8 neon-border space-y-5">
             <div>
-              <label htmlFor="contact-name" className="text-xs font-mono text-slate-400 mb-1.5 block">Name</label>
+              <label htmlFor="contact-name" className="text-xs font-mono text-theme-subtle mb-1.5 block">Name</label>
               <input
                 id="contact-name" type="text" name="name" value={form.name} onChange={handleChange}
                 placeholder="Your Name" className="input-glow" autoComplete="off"
@@ -148,7 +148,7 @@ function Contact() {
               {errors.name && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><FiAlertCircle size={11} />{errors.name}</p>}
             </div>
             <div>
-              <label htmlFor="contact-email" className="text-xs font-mono text-slate-400 mb-1.5 block">Email Address</label>
+              <label htmlFor="contact-email" className="text-xs font-mono text-theme-subtle mb-1.5 block">Email Address</label>
               <input
                 id="contact-email" type="email" name="email" value={form.email} onChange={handleChange}
                 placeholder="hello@example.com" className="input-glow" autoComplete="off"
@@ -156,7 +156,7 @@ function Contact() {
               {errors.email && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><FiAlertCircle size={11} />{errors.email}</p>}
             </div>
             <div>
-              <label htmlFor="contact-message" className="text-xs font-mono text-slate-400 mb-1.5 block">Message</label>
+              <label htmlFor="contact-message" className="text-xs font-mono text-theme-subtle mb-1.5 block">Message</label>
               <textarea
                 id="contact-message" name="message" value={form.message} onChange={handleChange}
                 placeholder="I'd love to connect about..." rows={5} className="input-glow resize-none"
@@ -183,14 +183,14 @@ function Contact() {
               {status === 'success' && (
                 <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   className="flex items-center gap-2 p-3 rounded-lg text-sm"
-                  style={{ background: 'rgba(0,255,170,0.1)', border: '1px solid rgba(0,255,170,0.3)', color: '#00ffaa' }}>
+                  style={{ background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.3)', color: 'var(--neon-green)' }}>
                   <FiCheck size={15} /> Thank you! I'll get back to you soon.
                 </motion.div>
               )}
               {status === 'error' && (
                 <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                   className="flex items-center gap-2 p-3 rounded-lg text-sm"
-                  style={{ background: 'rgba(255,80,80,0.1)', border: '1px solid rgba(255,80,80,0.3)', color: '#ff6b6b' }}>
+                  style={{ background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.3)', color: '#ef4444' }}>
                   <FiAlertCircle size={15} /> Failed to send. Please email me directly at rishabhtrivedi06@gmail.com
                 </motion.div>
               )}

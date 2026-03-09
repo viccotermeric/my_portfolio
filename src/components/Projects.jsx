@@ -71,14 +71,12 @@ function ProjectCard({ project, isActive }) {
 
   return (
     <motion.div
-      className="h-full flex flex-col rounded-2xl overflow-hidden select-none relative"
+      className="h-full flex flex-col rounded-2xl overflow-hidden select-none relative group"
       style={{
-        background: 'rgba(8,16,32,0.92)',
-        border: `1px solid ${isActive ? project.color + '60' : 'rgba(255,255,255,0.07)'}`,
-        boxShadow: isActive
-          ? `0 0 50px ${project.color}28, 0 24px 60px rgba(0,0,0,0.6), inset 0 1px 0 ${project.color}22`
-          : '0 8px 32px rgba(0,0,0,0.45)',
-        transition: 'border-color 0.4s, box-shadow 0.4s',
+        background: 'var(--dark-surface)',
+        border: '1px solid var(--glass-border)',
+        boxShadow: isActive ? '0 20px 40px var(--shadow-card), 0 0 0 1px var(--neon-blue)' : 'var(--shadow-card)',
+        transition: 'all 0.4s ease-out',
       }}
     >
       {/* Colored top stripe */}
@@ -88,21 +86,22 @@ function ProjectCard({ project, isActive }) {
       {/* Image / icon area */}
       <div className="relative overflow-hidden flex-shrink-0" style={{ height: '170px' }}>
         {project.image ? (
-          <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+          <img src={project.image} alt={project.title} loading="lazy" className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center"
-            style={{ background: `radial-gradient(ellipse at 50% 30%, ${project.color}12, #050a14 75%)` }}>
+          <div className="w-full h-full flex items-center justify-center relative overflow-hidden"
+            style={{ background: 'var(--dark-bg)' }}>
+            <div className="absolute inset-0 opacity-20" style={{ background: `radial-gradient(ellipse at center, ${project.color}, transparent 70%)` }} />
             <motion.div
-              style={{ fontSize: '3.5rem', lineHeight: 1, filter: `drop-shadow(0 0 20px ${project.color}60)` }}
+              style={{ fontSize: '3.5rem', lineHeight: 1, filter: `drop-shadow(0 10px 20px var(--shadow-card))` }}
               animate={isActive ? { y: [0, -6, 0], scale: [1, 1.08, 1] } : { y: 0, scale: 1 }}
               transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}>
               {project.icon}
             </motion.div>
           </div>
         )}
-        {/* Gradient overlay */}
+        {/* Soft elegant gradient overlay */}
         <div className="absolute inset-0"
-          style={{ background: 'linear-gradient(to top, rgba(8,16,32,1) 0%, transparent 60%)' }} />
+          style={{ background: 'linear-gradient(to top, var(--dark-surface) 0%, transparent 40%)', opacity: 0.8 }} />
         {/* Featured badge */}
         {project.featured && (
           <span className="absolute top-2.5 left-3 text-xs font-mono px-2 py-0.5 rounded-full"
@@ -116,21 +115,17 @@ function ProjectCard({ project, isActive }) {
       <div className="p-5 flex flex-col flex-1">
         {/* Title + subtitle */}
         <div className="mb-3">
-          <h3 className="text-white font-bold text-lg leading-tight mb-0.5">{project.title}</h3>
+          <h3 className="text-theme-text font-bold text-lg leading-tight mb-0.5">{project.title}</h3>
           <p className="text-xs font-mono tracking-wide" style={{ color: project.color }}>{project.subtitle}</p>
         </div>
 
-        <p className="text-slate-400 text-sm leading-relaxed mb-4 flex-1">{project.description}</p>
+        <p className="text-theme-muted text-sm leading-relaxed mb-4 flex-1">{project.description}</p>
 
         {/* Tags */}
         <div className="flex flex-wrap gap-1.5 mb-4">
           {project.tags.map((tag) => (
-            <span key={tag} className="text-xs px-2.5 py-0.5 rounded-full font-mono"
-              style={{
-                background: `${tagColors[tag] || project.color}15`,
-                color: tagColors[tag] || project.color,
-                border: `1px solid ${tagColors[tag] || project.color}30`,
-              }}>
+            <span key={tag} className="text-xs font-medium px-2.5 py-1 rounded-full text-theme-subtle"
+              style={{ background: 'var(--dark-bg)', border: '1px solid var(--glass-border)' }}>
               {tag}
             </span>
           ))}
@@ -142,16 +137,16 @@ function ProjectCard({ project, isActive }) {
             href={ghLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm font-medium px-4 py-2 rounded-xl transition-colors"
+            className="flex items-center gap-1.5 text-sm font-semibold px-5 py-2.5 rounded-xl transition-all"
             style={{
-              background: 'rgba(255,255,255,0.05)',
-              color: 'rgba(255,255,255,0.7)',
-              border: '1px solid rgba(255,255,255,0.1)',
+              background: 'var(--dark-bg)',
+              color: 'var(--theme-text)',
+              border: '1px solid var(--border-color)',
             }}
             whileHover={{
               scale: 1.05,
-              color: '#fff',
-              borderColor: `${project.color}60`,
+              borderColor: 'var(--neon-blue)',
+              boxShadow: '0 10px 30px var(--shadow-card)',
               background: `${project.color}12`,
             }}
             whileTap={{ scale: 0.95 }}
@@ -175,8 +170,8 @@ function ProjectCard({ project, isActive }) {
           )}
 
           {!project.github && !project.demo && (
-            <span className="flex items-center gap-1.5 text-xs font-mono px-3 py-2 rounded-xl text-slate-600"
-              style={{ border: '1px solid rgba(255,255,255,0.05)' }}>
+            <span className="flex items-center gap-1.5 text-xs font-mono px-3 py-2 rounded-xl text-theme-subtle"
+              style={{ border: '1px solid var(--glass-border)' }}>
               <FiCode size={12} /> In Development
             </span>
           )}
@@ -195,22 +190,15 @@ function Projects() {
     <motion.button
       aria-label={direction === 'prev' ? 'Previous project' : 'Next project'}
       onClick={() => direction === 'prev' ? swiperRef.current?.slidePrev() : swiperRef.current?.slideNext()}
-      className="flex-shrink-0 w-11 h-11 rounded-full flex items-center justify-center self-center"
+      className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center self-center transition-all"
       style={{
-        background: 'rgba(5,10,20,0.8)',
-        border: '1px solid rgba(0,212,255,0.25)',
-        backdropFilter: 'blur(12px)',
-        boxShadow: '0 0 20px rgba(0,212,255,0.1)',
-        color: '#00d4ff',
+        background: 'var(--dark-surface)',
+        border: '1px solid var(--glass-border)',
+        boxShadow: 'var(--shadow-card)',
+        color: 'var(--text-main)',
       }}
-      whileHover={{
-        scale: 1.15,
-        borderColor: 'rgba(0,212,255,0.8)',
-        boxShadow: '0 0 30px rgba(0,212,255,0.4)',
-        color: '#ffffff',
-      }}
-      whileTap={{ scale: 0.9 }}
-    >
+      whileHover={{ scale: 1.1, borderColor: 'var(--neon-blue)', color: 'var(--neon-blue)' }}
+      whileTap={{ scale: 0.9 }}>
       {direction === 'prev'
         ? <FiChevronLeft size={20} strokeWidth={2.5} />
         : <FiChevronRight size={20} strokeWidth={2.5} />}
@@ -226,7 +214,7 @@ function Projects() {
         animate={inView ? { opacity: 1, y: 0, filter: 'blur(0px)' } : {}}
         transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}>
         <p className="font-mono text-cyan-400 text-sm mb-2 tracking-widest uppercase">What I've built</p>
-        <h2 className="section-title gradient-text text-center">Featured Projects</h2>
+        <h2 id="projects-heading" className="section-title gradient-text text-center">Featured Projects</h2>
         <div className="w-16 h-1 mx-auto rounded-full mt-3"
           style={{ background: 'linear-gradient(90deg, #00d4ff, #9b59b6)' }} />
       </motion.div>
@@ -276,7 +264,7 @@ function Projects() {
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ delay: 0.5, duration: 0.6 }}>
-        <p className="text-slate-500 mb-4 text-sm">See all my work on GitHub →</p>
+        <p className="text-theme-subtle mb-4 text-sm">See all my work on GitHub →</p>
         <motion.a href={PROFILE_GH} target="_blank" rel="noopener noreferrer"
           className="btn-outline inline-flex items-center gap-2"
           whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>

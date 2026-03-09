@@ -22,7 +22,7 @@ function FloatingSocials() {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={label}
-          className="text-slate-400 hover:text-cyan-400 transition-colors duration-200"
+          className="text-theme-muted hover:text-accent-main transition-colors duration-200"
           whileHover={{ scale: 1.3, x: 4 }}
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}

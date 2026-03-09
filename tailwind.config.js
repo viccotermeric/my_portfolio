@@ -15,6 +15,10 @@ export default {
         'dark-surface': '#0d1726',
         'dark-card': '#111827',
         'glass': 'rgba(255,255,255,0.05)',
+        'theme-text': 'var(--text-main)',
+        'theme-muted': 'var(--text-muted)',
+        'theme-subtle': 'var(--text-subtle)',
+        'theme-border': 'var(--border-color)',
       },
       fontFamily: {
         'space': ['"Space Grotesk"', 'sans-serif'],

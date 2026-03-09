@@ -54,23 +54,23 @@ function TerminalAnimation() {
         <div className="terminal-dot" style={{ background: '#ff5f57' }} />
         <div className="terminal-dot" style={{ background: '#febc2e' }} />
         <div className="terminal-dot" style={{ background: '#28c840' }} />
-        <span className="ml-3 text-slate-500 text-xs font-mono">rishabh@portfolio:~</span>
+        <span className="ml-3 text-theme-subtle text-xs font-mono">rishabh@portfolio:~</span>
       </div>
       <div className="terminal-body min-h-[200px]">
         {visibleLines.map((line, i) => (
           <motion.div key={i} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
             <div className="flex items-center gap-2">
-              <span style={{ color: '#00d4ff' }}>$ </span>
-              <span className="text-slate-300">{line.typedCmd}</span>
+              <span className="text-accent-main">$ </span>
+              <span className="text-theme-muted">{line.typedCmd}</span>
             </div>
             <div style={{ color: line.outputColor }} className="pl-4 mb-1">{line.output}</div>
           </motion.div>
         ))}
         {typingIndex < commands.length && (
           <div className="flex items-center gap-2">
-            <span style={{ color: '#00d4ff' }}>$ </span>
-            <span className="text-slate-300">{typedText}</span>
-            <motion.span className="inline-block w-2 h-4 ml-0.5 align-middle" style={{ background: '#00d4ff' }}
+            <span className="text-accent-main">$ </span>
+            <span className="text-theme-muted">{typedText}</span>
+            <motion.span className="inline-block w-2 h-4 ml-0.5 align-middle bg-accent-main" 
               animate={{ opacity: [1, 0, 1] }} transition={{ duration: 0.7, repeat: Infinity }} />
           </div>
         )}

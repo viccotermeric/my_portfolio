@@ -29,7 +29,7 @@ function App() {
   }, []);
 
   return (
-    <div style={{ background: '#050a14', minHeight: '100vh' }}>
+    <div style={{ background: 'var(--dark-bg)', minHeight: '100vh', transition: 'background 0.3s' }}>
       {/* Main content — always rendered underneath */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -42,12 +42,12 @@ function App() {
         <FloatingSocials />
         <BackToTop scrollY={scrollY} />
         <main>
-          <section id="home"><Hero /></section>
-          <section id="about"><About /></section>
-          <section id="skills"><Skills /></section>
-          <section id="projects"><Projects /></section>
-          <section id="education"><Education /></section>
-          <section id="contact"><Contact /></section>
+          <section id="home" aria-labelledby="hero-heading"><Hero /></section>
+          <section id="about" aria-labelledby="about-heading"><About /></section>
+          <section id="skills" aria-labelledby="skills-heading"><Skills /></section>
+          <section id="projects" aria-labelledby="projects-heading"><Projects /></section>
+          <section id="education" aria-labelledby="education-heading"><Education /></section>
+          <section id="contact" aria-labelledby="contact-heading"><Contact /></section>
         </main>
         <Footer />
       </motion.div>
@@ -59,7 +59,7 @@ function App() {
             key="loader"
             style={{
               position: 'fixed', inset: 0,
-              background: '#050a14',
+              background: 'var(--dark-bg)',
               zIndex: 99999,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}
