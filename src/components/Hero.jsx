@@ -189,9 +189,11 @@ function Hero() {
 
       {/* Scroll cue */}
       <motion.button
-        className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group z-10"
+        className="absolute bottom-6 md:bottom-10 left-1/2 flex flex-col items-center gap-2 group z-10"
         onClick={() => go('about')}
-        initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.7, type: 'spring' }}
+        initial={{ opacity: 0, y: 20, x: '-50%' }} 
+        animate={{ opacity: 1, y: 0, x: '-50%' }} 
+        transition={{ delay: 1.7, type: 'spring' }}
         aria-label="Scroll to About">
         <span className="text-[10px] font-mono tracking-[0.2em] uppercase text-theme-subtle group-hover:text-cyan-400 transition-colors">
           Scroll

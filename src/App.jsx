@@ -41,13 +41,13 @@ function App() {
         <Navbar scrollY={scrollY} />
         <FloatingSocials />
         <BackToTop scrollY={scrollY} />
-        <main>
-          <section id="home" aria-labelledby="hero-heading"><Hero /></section>
-          <section id="about" aria-labelledby="about-heading"><About /></section>
-          <section id="skills" aria-labelledby="skills-heading"><Skills /></section>
-          <section id="projects" aria-labelledby="projects-heading"><Projects /></section>
-          <section id="education" aria-labelledby="education-heading"><Education /></section>
-          <section id="contact" aria-labelledby="contact-heading"><Contact /></section>
+        <main className="overflow-x-hidden">
+          <section id="home" className="overflow-x-hidden" aria-labelledby="hero-heading"><Hero /></section>
+          <section id="about" className="overflow-x-hidden" aria-labelledby="about-heading"><About /></section>
+          <section id="skills" className="overflow-x-hidden" aria-labelledby="skills-heading"><Skills /></section>
+          <section id="projects" className="overflow-x-hidden" aria-labelledby="projects-heading"><Projects /></section>
+          <section id="education" className="overflow-x-hidden" aria-labelledby="education-heading"><Education /></section>
+          <section id="contact" className="overflow-x-hidden" aria-labelledby="contact-heading"><Contact /></section>
         </main>
         <Footer />
       </motion.div>
