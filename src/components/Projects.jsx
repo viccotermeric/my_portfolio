@@ -238,12 +238,12 @@ function Projects() {
         transition={{ delay: 0.2, duration: 0.95, ease: [0.16, 1, 0.3, 1] }}>
 
         {/* Row: [←]  [card]  [→] */}
-        <div className="flex items-center gap-6 sm:gap-14 md:gap-20 justify-center px-1 sm:px-4">
+        <div className="flex items-center gap-3 sm:gap-14 md:gap-20 justify-center px-1 sm:px-4">
           <div className="z-10">
             <NavBtn direction="prev" />
           </div>
 
-          <div className="w-full max-w-[250px] sm:max-w-[320px] md:max-w-[360px]">
+          <div className="w-full max-w-[230px] sm:max-w-[320px] md:max-w-[360px]">
             <Swiper
               modules={[Pagination, EffectCards, Autoplay]}
               effect="cards"

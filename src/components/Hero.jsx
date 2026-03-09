@@ -88,7 +88,7 @@ function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden grid-bg"
+    <section className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden grid-bg"
       aria-labelledby="hero-heading">
       <ParticleCanvas />
 
@@ -186,7 +186,7 @@ function Hero() {
 
       {/* Scroll cue */}
       <motion.button
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group z-10"
+        className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 group z-10"
         onClick={() => go('about')}
         initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.7, type: 'spring' }}
         aria-label="Scroll to About">

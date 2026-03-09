@@ -138,7 +138,7 @@ function Contact() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ delay: 0.22, duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
         >
-          <form onSubmit={handleSubmit} className="glass rounded-2xl p-8 neon-border space-y-5">
+          <form onSubmit={handleSubmit} className="glass rounded-2xl p-5 md:p-8 neon-border space-y-5">
             <div>
               <label htmlFor="contact-name" className="text-xs font-mono text-slate-400 mb-1.5 block">Name</label>
               <input
