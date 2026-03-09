@@ -140,10 +140,10 @@ function Contact() {
         >
           <form onSubmit={handleSubmit} className="glass rounded-2xl p-8 neon-border space-y-5">
             <div>
-              <label htmlFor="contact-name" className="text-xs font-mono text-slate-400 mb-1.5 block">Your Name</label>
+              <label htmlFor="contact-name" className="text-xs font-mono text-slate-400 mb-1.5 block">Name</label>
               <input
                 id="contact-name" type="text" name="name" value={form.name} onChange={handleChange}
-                placeholder="Pablo Escobar" className="input-glow" autoComplete="off"
+                placeholder="Your Name" className="input-glow" autoComplete="off"
               />
               {errors.name && <p className="text-red-400 text-xs mt-1 flex items-center gap-1"><FiAlertCircle size={11} />{errors.name}</p>}
             </div>
