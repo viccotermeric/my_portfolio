@@ -602,22 +602,15 @@ export default function App() {
   }
 
 
-  if (isBooting) {
-    return (
-      <>
-        <canvas id="network-canvas" ref={canvasRef}></canvas>
-        <div id="scanlines"></div>
-        <BootSequence onComplete={() => setIsBooting(false)} />
-      </>
-    );
-  }
-
   return (
     <>
       <canvas id="network-canvas" ref={canvasRef}></canvas>
       <div id="scanlines"></div>
 
-      <div className="terminal-container w-full max-w-4xl mx-auto">
+      {isBooting ? (
+        <BootSequence onComplete={() => setIsBooting(false)} />
+      ) : (
+        <div className="terminal-container w-full max-w-4xl mx-auto">
         <div id="contact-icons-wrapper">
           <div id="contact-icons-container">
               <div id="status-bar" className="flex items-center gap-4 ml-4">
@@ -691,6 +684,7 @@ export default function App() {
           <GuiView activeTab={activeTab} onTabChange={setActiveTab} footerHtml={guiFooterHtml} />
         )}
       </div>
+      )}
     </>
   );
 }
