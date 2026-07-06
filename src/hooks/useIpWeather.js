@@ -20,7 +20,7 @@ export function useIpWeather() {
 
         // Fetch weather in Celsius (default for open-meteo)
         const weatherRes = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m`
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m&temperature_unit=fahrenheit`
         );
         if (!weatherRes.ok) throw new Error('Weather fetch failed');
         
@@ -30,12 +30,12 @@ export function useIpWeather() {
         if (typeof temperature !== 'number') throw new Error('No temperature data');
 
         if (!cancelled) {
-          setWeatherText(`${Math.round(temperature)}°C`);
+          setWeatherText(`${city ? city + ', ' : ''}${Math.round(temperature)}°F`);
         }
       } catch (error) {
         console.warn('Weather fetching dynamically failed:', error);
         if (!cancelled) {
-          setWeatherText('22°C'); // Safe fallback if adblockers block IP fetches
+          setWeatherText('79°F'); // Safe fallback if adblockers block IP fetches
         }
       }
     };
