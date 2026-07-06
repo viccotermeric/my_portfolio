@@ -3,12 +3,17 @@ import { CALENDLY_URL, COMMAND_GROUPS, COMMAND_MANUALS, COMMAND_NAMES, EMAIL_HRE
 import { formatBreaks, makeOutputEntry } from './terminalHelpers.js';
 
 export function getBootEntry() {
+  const intros = [
+    `Von Neumann mapped the architecture.<br>Codd structured the data.<br>Torvalds proved it could be open.<br><br>I'm just trying to make sure the pipelines don't collapse at midnight.<br>So far: scalable MERN infrastructure, generative AI workflows, and entirely too much time spent figuring out why MySQL dropped a transaction under load.`,
+    `Turing formalized the computation.<br>Hoare defined the logic.<br>Berners-Lee linked the globe.<br><br>I'm just trying to center a div without breaking the build.<br>So far: clean Next.js interfaces, optimized databases, and an unreasonable amount of time staring at CORS errors.`,
+    `Lovelace wrote the first algorithm.<br>Dijkstra found the shortest path.<br>Cerf and Kahn connected the network.<br><br>I'm just trying to push this hotfix before the weekend.<br>So far: robust backend systems, seamless API integrations, and one too many encounters with 'undefined is not a function'.`,
+    `Babbage conceptualized the engine.<br>Ritchie created the standard.<br>Gosling brewed the Java.<br><br>I'm just trying to convince the compiler I know what I'm doing.<br>So far: responsive frontends, intelligent agent architectures, and a growing collection of coffee cups on my desk.`,
+    `Shannon defined the information.<br>Knuth mastered the art.<br>Carmack engineered the graphics.<br><br>I'm just trying to make my local environment match production.<br>So far: modern full-stack codebases, scalable system designs, and a very personal vendetta against cached state.`,
+    `Engelbart invented the mouse.<br>Jobs polished the interface.<br>Satoshi secured the ledger.<br><br>I'm just trying to figure out which microservice threw the 500 error.<br>So far: enterprise-ready applications, elegant UX solutions, and a deep appreciation for meaningful commit messages.`
+  ];
+  const selectedIntro = intros[Math.floor(Math.random() * intros.length)];
   return makeOutputEntry(
-    `Von Neumann mapped the architecture.<br>` +
-    `Codd structured the data.<br>` +
-    `Torvalds proved it could be open.<br><br>` +
-    `I'm just trying to make sure the pipelines don't collapse at midnight.<br>` +
-    `So far: scalable MERN infrastructure, generative AI workflows, and entirely too much time spent figuring out why MySQL dropped a transaction under load.<br><br>` +
+    `${selectedIntro}<br><br>` +
     `Type <span class="command">'help'</span> to see what's here, or ask me conversational questions directly.`
   );
 }
