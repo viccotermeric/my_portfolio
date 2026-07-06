@@ -1,5 +1,5 @@
 import { portfolioData } from '../../portfolio-data.js';
-import { CALENDLY_URL, EMAIL_HREF } from '../constants/terminal.js';
+import { EMAIL_HREF } from '../constants/terminal.js';
 import { formatBreaks } from '../utils/terminalHelpers.js';
 
 const PRIMARY_TABS = ['About', 'Experience', 'Projects', 'Skills', 'Contact'];
@@ -208,10 +208,7 @@ export function GuiView({ activeTab, onTabChange, footerHtml }) {
               <div className="gui-item-title">GitHub</div>
               <a href={portfolioData.contact.github} target="_blank" rel="noreferrer" className="link">{portfolioData.contact.github}</a>
             </div>
-            <div className="gui-item">
-              <div className="gui-item-title">Schedule a call</div>
-              <a href={CALENDLY_URL} target="_blank" rel="noreferrer" className="link">{CALENDLY_URL}</a>
-            </div>
+
             <div className="gui-item">
               <div className="gui-item-title">GitHub Activity</div>
               <a href={portfolioData.contact.github} target="_blank" rel="noreferrer">

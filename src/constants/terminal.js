@@ -2,7 +2,6 @@ import { portfolioData } from '../../portfolio-data.js';
 
 export const PROMPT_TEXT = 'Rishabh@portfolio ~ % ';
 export const RESUME_URL = '/Rishabh_Trivedi_Resume.pdf';
-export const CALENDLY_URL = 'https://calendly.com/rishabhtrivedi';
 export const EMAIL_HREF =
   'https://mail.google.com/mail/?view=cm&fs=1&to=rtrivedi.data@gmail.com&su=Connecting%20via%20portfolio';
 
@@ -182,7 +181,6 @@ export const COMMAND_NAMES = [
   'skills',
   'resume',
   'contact',
-  'contact --schedule',
   'creator',
   'sudo hire',
   'decisions',
@@ -205,7 +203,7 @@ export const COMMAND_GROUPS = [
   },
   {
     title: 'Contact & hiring',
-    commands: ['contact', 'contact --schedule', 'availability', 'resume', 'download resume', 'sudo hire'],
+    commands: ['contact', 'availability', 'resume', 'download resume', 'sudo hire'],
   },
   {
     title: 'Terminal',
@@ -343,11 +341,6 @@ export const COMMAND_MANUALS = {
     summary: 'Show contact links.',
     usage: 'contact',
     description: 'Prints email, LinkedIn, and GitHub contact paths.',
-  },
-  'contact --schedule': {
-    summary: 'Open the scheduling link directly.',
-    usage: 'contact --schedule',
-    description: 'Shows the Calendly link so recruiters can book time without hunting for it.',
   },
   creator: {
     summary: 'Show the signature ASCII creator card.',

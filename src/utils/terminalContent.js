@@ -1,5 +1,5 @@
 import { portfolioData } from '../../portfolio-data.js';
-import { CALENDLY_URL, COMMAND_GROUPS, COMMAND_MANUALS, COMMAND_NAMES, EMAIL_HREF, RESUME_URL, THEMES } from '../constants/terminal.js';
+import { COMMAND_GROUPS, COMMAND_MANUALS, COMMAND_NAMES, EMAIL_HREF, RESUME_URL, THEMES } from '../constants/terminal.js';
 import { formatBreaks, makeOutputEntry } from './terminalHelpers.js';
 
 export function getBootEntry() {
@@ -153,7 +153,6 @@ export function getCommandEntries(command) {
     case 'skills': return [makeOutputEntry(buildSkillsHtml())];
     case 'resume': return [makeOutputEntry(buildResumeHtml())];
     case 'contact': return [makeOutputEntry(buildContactHtml())];
-    case 'contact --schedule': return [makeOutputEntry(`Book time here: <a href="${CALENDLY_URL}" target="_blank" class="link">${CALENDLY_URL}</a>`)];
     case 'creator': return [makeOutputEntry(`<div class="creator-caption">Rishabh Trivedi — Software &amp; AI Engineer</div>`)];
     case 'sudo hire': return [makeOutputEntry(buildSudoHireHtml())];
     case 'all': return [makeOutputEntry(buildAllHtml())];
