@@ -1,0 +1,39 @@
+{
+  "name": "rishabhtrivedi.github.io",
+  "version": "1.0.0",
+  "description": "Welcome to my interactive portfolio, a unique terminal-style website designed to showcase my skills and experience.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build:wasm": "bash systems/build-all.sh",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viccotermeric/rishabhtrivedi.github.io.git"
+  },
+  "keywords": [],
+  "author": "Rishabh Trivedi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/viccotermeric/rishabhtrivedi.github.io/issues"
+  },
+  "homepage": "https://github.com/viccotermeric/rishabhtrivedi.github.io#readme",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "dotenv": "^17.4.2",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "recharts": "^3.8.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.1",
+    "@types/node": "^24.4.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "tailwindcss": "^4.3.1",
+    "vite": "^8.0.10",
+    "vitest": "^4.1.8"
+  }
+}

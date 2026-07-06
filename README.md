@@ -1,0 +1,174 @@
+# Terminal Protocol — Rishabh Trivedi's Portfolio
+
+> Type a command. Ask a question. My portfolio responds.
+
+[![Live](https://img.shields.io/badge/live-viccotermeric.github.io-5A6050?style=flat-square)](https://viccotermeric.github.io)
+
+![Portfolio Screenshot](Terminal.png)
+
+---
+
+## What is this?
+
+This is my personal portfolio — built as a fully interactive terminal with an AI assistant named **Terminal**. Instead of a static page with a PDF link, you get a shell-like experience where you can run commands, explore projects with live screenshots, ask questions in plain English, switch colour themes, and read my career history formatted as a deployment log.
+
+Not a terminal person? Hit the screen icon in the top-right corner to switch to Standard View — a tab-based layout with the same content.
+
+Type `help` to see what's available. Type `diff` or `patch notes` if you want the release story first.
+
+---
+
+## Commands worth trying
+
+| Command | What it does |
+|---|---|
+| `log` | My career as a system log — from Pondicherry to San Jose |
+| `projects <slug>` | Deep-dive on a project: pipeline, stack, highlights, screenshots |
+| `diff` | What changed between v24 and v25 of me |
+| `patch notes` | v25.0.0 release notes — deprecations, additions, known bugs |
+| `terminal --version` | Current system profile |
+| `availability` | Role types, location, start date |
+| `sudo hire` | The short case for hiring me |
+| `creator` | The person behind the terminal |
+| `sys --alloc` | Live free-list allocator demo — compiled from C to WASM |
+| `sys --shell` | Embedded mini shell with pipes and redirection |
+| `sys --threads` | Round-robin thread scheduler with deadlock visualisation |
+| `theme --list` | Switch between built-in colour themes |
+| `man [command]` | Unix-style manual page for any command |
+
+---
+
+## Featured projects
+
+| Project | Stack | Live |
+|---|---|---|
+| PostHog Engineering Impact Dashboard | Airflow · dbt · PostgreSQL · FastAPI · Redis · React | [↗](https://posthog-impact-dashboard-viccotermeric2001.vercel.app/) |
+| LocalLens | FastAPI · React · Groq · Google Places API · Foursquare | [↗](https://local-lens-six.vercel.app/) |
+| LexAI | Gemini 2.5 Flash · Vercel Serverless · Node.js | [↗](https://lexai-gem.vercel.app/) |
+| AI Neighborhood Watch | Flask · PostgreSQL · Gemini · ElevenLabs · Leaflet.js | [↗](https://ai-neighborhood-watch.vercel.app/) |
+| Smart Doc Finder | Python · Redis · MongoDB · React · Docker | — |
+
+Run `projects <slug>` in the terminal (e.g. `projects locallens`) to see the full pipeline, stack details, and screenshots.
+
+---
+
+## Hackathons
+
+| Hackathon | Date | Built | Team |
+|---|---|---|---|
+| RWJ Health Hackathon | Oct 2025 | Cross-platform AI chat app — 5 LLMs, streaming, AWS Cognito auth | 10 (4 med students, 6 engineers) |
+| HackRU | Sept 2025 | AI Neighborhood Watch — real-time incident map + ElevenLabs audio briefings | Solo |
+| Redis Hackathon (Dev.to) | Summer 2025 | Smart Doc Finder — Redis Streams + vector search + semantic caching | 2 |
+
+---
+
+## Tech stack
+
+- **Frontend** — React 19 + Vite 8 + Tailwind CSS v4
+- **Styling** — CSS custom properties + Tailwind utility classes (build-time, no CDN)
+- **Backend** — Vercel Serverless Functions
+- **AI** — Google Gemini with a RAG pipeline
+- **Vector DB** — Pinecone
+- **Systems demos** — C compiled to WASM via Emscripten (free-list allocator, mini shell, thread scheduler)
+- **Analytics** — Vercel Web Analytics
+
+---
+
+## How Terminal works
+
+When you ask a question in plain English, Terminal doesn't just pass it to a language model and hope for the best:
+
+1. If there's conversation history, the question is rewritten into a standalone form
+2. The question is embedded with Gemini
+3. Pinecone is queried for the most relevant chunks from my actual portfolio data
+4. Those chunks are injected into the prompt as grounding context
+5. Gemini generates a response based only on what's in my portfolio
+
+This keeps the answers accurate and specific to my actual background — not a model hallucinating a plausible-sounding resume.
+
+---
+
+## Terminal UX details
+
+The terminal is designed to feel like a real shell, not a novelty widget:
+
+- `Tab` autocompletes commands with shared-prefix support (like bash)
+- `Ctrl+C` cancels an in-flight AI request mid-stream
+- `↑` / `↓` navigates command history
+- `man [command]` opens a formatted manual page
+- `theme [name]` switches the colour theme instantly and persists across visits
+- Screen reader support via `aria-live` on the output region
+
+---
+
+## Project structure
+
+```text
+.
+├── api/chat.js                  # Vercel serverless chat endpoint (RAG pipeline)
+├── src/App.jsx                  # Main app — terminal state, input handling, routing
+├── src/main.jsx                 # React + Vite entry point
+├── src/components/              # TerminalEntry, GuiView, SocialIcons, AllocDemo, ShellDemo, ThreadDemo
+├── src/constants/terminal.js    # Command registry, manuals, theme definitions
+├── src/hooks/                   # useIpWeather, useAudio, useAnimatedNetwork
+├── src/utils/                   # terminalContent, terminalHelpers, themeUtils
+│   ├── terminalHelpers.test.js  # Unit tests (Vitest)
+│   └── terminalContent.test.js
+├── portfolio-data.js            # Portfolio content (used by UI and Pinecone indexer)
+├── index-data.mjs               # One-time Pinecone indexing script
+├── public/
+│   ├── wasm/                    # Prebuilt WASM binaries (alloc.wasm, shell.wasm)
+│   └── projects/                # Project screenshots served as static assets
+├── systems/                     # C source for WASM demos + Emscripten Makefiles
+├── style.css                    # Global styles with CSS custom property theming
+└── vite.config.js               # Vite config with Tailwind plugin + local /api proxy
+```
+
+---
+
+## Local development
+
+### Prerequisites
+
+- Node.js 20+
+- Google AI API key
+- Pinecone API key + a populated index named `portfolio-rag`
+
+### Setup
+
+```bash
+git clone https://github.com/viccotermeric/viccotermeric.github.io.git
+cd viccotermeric.github.io
+npm install
+cp .env.example .env
+# add your keys to .env
+npm run dev
+```
+
+Vite proxies `/api/*` requests to the deployed Vercel backend during local development so you don't need to run `vercel dev` separately.
+
+Prebuilt `.wasm` binaries for the systems demos are committed under `public/wasm/` and work out of the box. If you modify the C sources under `systems/`, rebuild with:
+
+```bash
+npm run build:wasm
+```
+
+This requires Emscripten (`emcc`) to be installed and on your `PATH`.
+
+### Build, test, and preview
+
+```bash
+npm run build      # production build
+npm test           # run Vitest unit tests
+npm run preview    # local preview of the production build
+```
+
+---
+
+## Contact
+
+Built by Rishabh Trivedi — MS in CS, Rutgers University. Based in San Jose, CA.
+
+- [linkedin.com/in/viccotermeric](https://www.linkedin.com/in/viccotermeric/)
+- [github.com/viccotermeric](https://github.com/viccotermeric)
+- [viccotermeric28@gmail.com](mailto:viccotermeric28@gmail.com)
