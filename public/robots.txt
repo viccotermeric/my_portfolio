@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://viccotermeric.github.io/sitemap.xml
+Sitemap: https://rishabh-trivedi.vercel.app/sitemap.xml
