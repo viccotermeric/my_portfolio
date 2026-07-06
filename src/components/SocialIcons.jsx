@@ -77,7 +77,6 @@ export function SocialIcons({ darkMode, onToggleTheme, onToggleView, terminalMod
       >
         <svg
           id="gui-icon-standard"
-          className="icon-button -ml-1.5"
           style={{ display: terminalMode ? 'block' : 'none' }}
           viewBox="0 0 240 330"
           xmlns="http://www.w3.org/2000/svg"
