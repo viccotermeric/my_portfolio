@@ -13,6 +13,7 @@ export function getBootEntry() {
   ];
   const selectedIntro = intros[Math.floor(Math.random() * intros.length)];
   return makeOutputEntry(
+    `Booting terminal v25.0.0...<br><br>` +
     `${selectedIntro}<br><br>` +
     `Type <span class="command">'help'</span> to see what's here, or ask me conversational questions directly.`
   );
