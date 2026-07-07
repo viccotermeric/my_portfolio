@@ -361,6 +361,31 @@ body.dark #moon-icon {
     margin-bottom: 1.5rem;
 }
 
+.project-card-v2 {
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card-v2:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-accent) !important;
+}
+
+body:not(.dark) .project-card-v2:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+body.dark .project-card-v2:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.tech-pill {
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.project-card-v2:hover .tech-pill {
+    border-color: var(--color-accent);
+}
+
 #gui-mode .gui-item-title {
     font-weight: bold;
 }
@@ -377,6 +402,29 @@ body.dark #moon-icon {
     padding-top: 1rem;
     margin-top: 2rem;
     border-top: 1px solid var(--color-border);
+}
+
+/* === Custom Aesthetic Overrides === */
+body[data-theme='matrix'] #terminal {
+    box-shadow: 0 0 32px rgba(0, 255, 65, 0.15) !important;
+    border: 1px solid rgba(0, 255, 65, 0.4) !important;
+}
+
+body[data-theme='hacker'] #terminal {
+    text-shadow: 0 0 3px rgba(0, 255, 0, 0.25);
+}
+
+body[data-theme='retro'] #scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+    z-index: 9999;
+    background-size: 100% 3px, 3px 100%;
+    pointer-events: none;
+    opacity: 0.55;
 }
 
 .gui-identity {

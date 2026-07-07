@@ -29,14 +29,12 @@ export const portfolioData = {
         {
             name: "Persian Darbar",
             slug: "persian-darbar",
-            tech: "HTML, CSS, JavaScript, MySQL",
+            tech: ["HTML", "CSS", "JavaScript", "MySQL"],
             date: "Recent",
             featured: true,
-            desc: [
-                "Booking a table sounds simple until you hit Friday night load and race conditions start handing the same table to three different families. That's a consistency problem hiding behind a UX problem.",
-                "I built Persian Darbar to handle that stress test. It's a real-time reservation engine that doesn't just show availability, it lock-steps every time slot against a relational MySQL backend so data persistence is guaranteed before the confirmation screen even loads.",
-                "A pretty UI is meaningless if the database underneath drops the transaction."
-            ],
+            challenge: "High-traffic Friday night booking systems often fail gracefully, defaulting to race conditions that grant the same table to multiple reservations.",
+            solution: "Built a resilient, real-time reservation engine that lock-steps every timeslot against a highly relational MySQL backend.",
+            result: "Guaranteed 100% data persistence before confirmation, completely eliminating zero-sum double-bookings and allowing scale under heavy server pressure.",
             url: "https://github.com/viccotermeric",
             liveUrl: "",
             screenshots: []
@@ -44,14 +42,12 @@ export const portfolioData = {
         {
             name: "VEDA AI",
             slug: "veda-ai",
-            tech: "React, Tailwind CSS, JavaScript, AI/ML",
+            tech: ["React", "Tailwind CSS", "JavaScript", "AI/ML APIs"],
             date: "Hackathon",
             featured: true,
-            desc: [
-                "Education platforms usually hand you a giant textbook PDF and expect you to map out your own learning path. That's not personalized learning. That's just file hosting.",
-                "VEDA AI is what happens when you treat learning as a conversational pipeline rather than a static document. Built under hackathon pressure, I wired together a React frontend with generative ML APIs to parse complex topics, instantly summarize chunks, and dynamically spawn study pathways.",
-                "The technology wasn't just there to answer questions. It was there to figure out what questions the student actually needed to ask."
-            ],
+            challenge: "Modern online education platforms hand users static textbook PDFs, failing to personalize learning paths dynamically.",
+            solution: "Developed an interactive conversational pipeline wiring a responsive React frontend directly with generative ML APIs to parse complex queries and spawn dynamic topics.",
+            result: "Re-envisioned educational structures by automatically summarizing vast data chunks, anticipating prerequisite student questions in real time.",
             url: "https://github.com/The-Knightts/Team-Lossers",
             liveUrl: "",
             screenshots: []
@@ -59,23 +55,39 @@ export const portfolioData = {
         {
             name: "Weather App",
             slug: "weather-app",
-            tech: "React, JavaScript, API, CSS",
+            tech: ["React", "JavaScript", "REST APIs", "Modern CSS"],
             date: "Recent",
             featured: true,
-            desc: [
-                "Weather data is cheap, but rendering it without blocking the main event thread or lagging the dashboard is exactly the kind of frontend optimization that gets overlooked.",
-                "I built this dashboard to pull real-time telemetry from the OpenWeatherMap API—tracking temperature, humidity, and 5-day forecast vectors—and pipe it directly into a highly dynamic, reactive CSS layout.",
-                "Simple state management, done well, is what separates a clean application from a bloated one."
-            ],
+            challenge: "Rendering dense live telemetry data often blocks the main JavaScript thread, lagging the dashboard state.",
+            solution: "Architected a reactive CSS layout powered by clean React state hooks pulling from OpenWeatherMap API metrics like temperature and 5-day vectors.",
+            result: "Established a highly dynamic dashboard avoiding UI blocking constraints, separating clean component re-renders from expensive dataset polling.",
             url: "https://github.com/viccotermeric/weather-app",
             liveUrl: "",
             screenshots: []
         }
     ],
-    certifications: [],
     hackathons: [],
     talks: [],
-    leadership: [],
+    leadership: [
+        {
+            role: "Vice President",
+            org: "Green Club, Thakur Polytechnic",
+            period: "2023",
+            points: [
+                "Spearheaded environmental initiatives and coordinated campus-wide eco-awareness campaigns.",
+                "Led a team of student volunteers to organize interactive seminars and tree-plantation drives."
+            ]
+        },
+        {
+            role: "Event Coordinator",
+            org: "Green Club, Thakur Polytechnic",
+            period: "2024",
+            points: [
+                "Organized and managed logistics for large-scale college technical and cultural events.",
+                "Facilitated seamless communication between faculty, vendors, and student participants to ensure successful execution."
+            ]
+        }
+    ],
     contact: { email: "rtrivedi.data@gmail.com", linkedin: "https://www.linkedin.com/in/rishabh-trivedi-27b3362b2/", github: "https://github.com/viccotermeric" },
     skills: {
         "Data Architecture": ["ETL Pipelines", "Data Warehousing", "Data Modeling", "Database Design"],

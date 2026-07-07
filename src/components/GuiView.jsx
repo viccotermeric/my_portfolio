@@ -4,7 +4,7 @@ import { formatBreaks } from '../utils/terminalHelpers.js';
 import { ContactFormDemo } from './ContactFormDemo.jsx';
 
 const PRIMARY_TABS = ['About', 'Experience', 'Projects', 'Skills', 'Contact'];
-const SECONDARY_TABS = ['Education'];
+const SECONDARY_TABS = ['Education', 'Leadership'];
 
 export function GuiView({ activeTab, onTabChange, footerHtml }) {
   return (
@@ -26,11 +26,16 @@ export function GuiView({ activeTab, onTabChange, footerHtml }) {
       <div className="gui-tabs-content">
         {activeTab === 'About' && (
           <div className="tab-content active">
-            <div className="gui-identity">
-              <h1 className="gui-identity-name">Rishabh Trivedi</h1>
-              <div className="gui-identity-title">Software & AI Engineer</div>
+            <div className="gui-identity mb-6 mt-4">
+              <h1 className="gui-identity-name text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
+                Building scalable architecture and <span style={{ color: 'var(--color-accent)' }}>interfaces people enjoy</span> using.
+              </h1>
+              <p className="gui-identity-title text-base md:text-lg opacity-85 max-w-2xl font-mono mt-4 leading-relaxed tracking-wide">
+                I enjoy crafting clean, intuitive experiences and transforming complex ideas into reliable backend systems and scalable digital products.
+              </p>
             </div>
-            <p dangerouslySetInnerHTML={{ __html: formatBreaks(portfolioData.about) }} />
+            <div className="gui-tabs-divider mt-8 mb-6" style={{ opacity: 0.3 }} />
+            <p className="text-lg leading-relaxed" dangerouslySetInnerHTML={{ __html: formatBreaks(portfolioData.about) }} />
           </div>
         )}
 
@@ -56,25 +61,42 @@ export function GuiView({ activeTab, onTabChange, footerHtml }) {
             {portfolioData.projects
               .filter((project) => project.featured)
               .map((project) => (
-                <div key={project.name} className="gui-item">
-                  <div className="gui-item-title">
-                    {project.name} <span className="text-sm">({project.tech})</span>
+                <div key={project.name} className="gui-item project-card-v2 p-6 rounded-lg mb-8 border border-opacity-20 shadow-sm transition-all duration-300 transform group relative" style={{ borderColor: 'var(--color-border)' }}>
+                  <div className="gui-item-title text-2xl font-bold mb-4">{project.name}</div>
+                  
+                  <div className="mb-4">
+                    <strong style={{ color: 'var(--color-text-secondary)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Challenge</strong>
+                    <p className="mt-1 leading-snug">{project.challenge}</p>
                   </div>
-                  {project.desc.map((point, index) => (
-                    <p key={`${project.name}-${index}`} style={{ marginBottom: '0.5rem' }} dangerouslySetInnerHTML={{ __html: point }} />
-                  ))}
+                  
+                  <div className="mb-4">
+                    <strong style={{ color: 'var(--color-text-secondary)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Solution</strong>
+                    <p className="mt-1 leading-snug">{project.solution}</p>
+                  </div>
+                  
+                  <div className="mb-5">
+                    <strong style={{ color: 'var(--color-accent)', display: 'block', fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Result</strong>
+                    <p className="mt-1 font-semibold" style={{ color: 'var(--color-text)' }}>{project.result}</p>
+                  </div>
+
+                  <div className="tech-pill-container flex flex-wrap gap-2 mt-6 mb-4">
+                    {Array.isArray(project.tech) ? project.tech.map((t, idx) => (
+                      <span key={idx} className="tech-pill text-xs px-2.5 py-1 rounded inline-block font-mono border" style={{ backgroundColor: 'var(--color-bg-secondary)', borderColor: 'var(--color-border)' }}>
+                        {t}
+                      </span>
+                    )) : null}
+                  </div>
+
                   {project.screenshots?.length > 0 && (
-                    <div className="project-screenshots-gui">
+                    <div className="project-screenshots-gui mt-4 mb-4 rounded overflow-hidden">
                       {project.screenshots.map((src, index) => (
-                        <img key={index} src={src} alt={`${project.name} screenshot`} className="project-screenshot-gui" loading="lazy" />
+                        <img key={index} src={src} alt={`${project.name} screenshot`} className="project-screenshot-gui hover:scale-105 transition-transform duration-500" loading="lazy" />
                       ))}
                     </div>
                   )}
-                  <div className="gui-project-links">
-                    <a href={project.url} target="_blank" rel="noreferrer" className="link">GitHub</a>
-                    {project.liveUrl && (
-                      <a href={project.liveUrl} target="_blank" rel="noreferrer" className="link">Live Demo →</a>
-                    )}
+                  <div className="gui-project-links flex gap-5 mt-4 items-center">
+                    {project.url && <a href={project.url} target="_blank" rel="noreferrer" className="link font-bold hover:underline transition-all">GitHub →</a>}
+                    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="link font-bold hover:underline transition-all" style={{ color: 'var(--color-accent)' }}>Live Demo →</a>}
                   </div>
                 </div>
               ))}
@@ -83,14 +105,19 @@ export function GuiView({ activeTab, onTabChange, footerHtml }) {
             {portfolioData.projects
               .filter((project) => !project.featured)
               .map((project) => (
-                <div key={project.name} className="gui-item">
-                  <div className="gui-item-title">
-                    {project.name} <span className="text-sm">({project.tech})</span>
+                <div key={project.name} className="gui-item project-card-v2 p-5 rounded-lg mb-6 border border-opacity-20 shadow-sm transition-all duration-300 transform group relative" style={{ borderColor: 'var(--color-border)' }}>
+                  <div className="gui-item-title text-xl font-bold mb-3">{project.name}</div>
+                  <div className="mb-2">
+                    <p className="mt-1 leading-snug">{project.challenge || project.solution || project.desc?.[0]}</p>
                   </div>
-                  {project.desc.map((point, index) => (
-                    <p key={`${project.name}-${index}`} style={{ marginBottom: '0.5rem' }} dangerouslySetInnerHTML={{ __html: point }} />
-                  ))}
-                  <a href={project.url} target="_blank" rel="noreferrer" className="link">
+                  <div className="tech-pill-container flex flex-wrap gap-2 mt-4 mb-3">
+                    {Array.isArray(project.tech) ? project.tech.map((t, idx) => (
+                      <span key={idx} className="tech-pill text-[10px] px-2 py-0.5 rounded inline-block font-mono border opacity-80" style={{ backgroundColor: 'var(--color-bg-secondary)', borderColor: 'var(--color-border)' }}>
+                        {t}
+                      </span>
+                    )) : null}
+                  </div>
+                  <a href={project.url} target="_blank" rel="noreferrer" className="link text-sm font-semibold opacity-85 hover:opacity-100 transition-opacity">
                     View on GitHub →
                   </a>
                 </div>
@@ -138,27 +165,17 @@ export function GuiView({ activeTab, onTabChange, footerHtml }) {
           </div>
         )}
 
-        {activeTab === 'Languages' && (
-          <div className="tab-content active">
-            {portfolioData.languages.map((language) => (
-              <div key={language.lang} className="gui-item">
-                <div className="gui-item-title">{language.lang}</div>
-                <div>{language.proficiency}</div>
-              </div>
-            ))}
-          </div>
-        )}
-
         {activeTab === 'Leadership' && (
           <div className="tab-content active">
             {portfolioData.leadership.map((role) => (
               <div key={`${role.role}-${role.org}`} className="gui-item">
                 <div className="gui-item-title">
-                  {role.role} | {role.org} ({role.period})
+                  <span style={{ color: 'var(--color-accent)' }}>{role.role}</span> @ {role.org}
                 </div>
+                <div style={{ opacity: 0.65, fontSize: '0.85em', marginBottom: '0.75rem' }}>{role.period}</div>
                 <ul>
-                  {role.points.map((point) => (
-                    <li key={point}>{point}</li>
+                  {role.points.map((point, index) => (
+                    <li key={index} style={{ marginBottom: '0.4rem', fontSize: '0.9em' }}>{point}</li>
                   ))}
                 </ul>
               </div>
@@ -166,39 +183,14 @@ export function GuiView({ activeTab, onTabChange, footerHtml }) {
           </div>
         )}
 
-        {activeTab === 'Talks' && (
-          <div className="tab-content active">
-            {portfolioData.talks.map((talk) => (
-              <div key={`${talk.title}-${talk.venue}`} className="gui-item">
-                <div className="gui-item-title">{talk.title}</div>
-                <div>{talk.venue}</div>
-                <i>{talk.date}</i>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {activeTab === 'Certifications' && (
-          <div className="tab-content active">
-            {portfolioData.certifications.map((certification) => (
-              <div key={certification.name} className="gui-item">
-                {certification.url ? (
-                  <a href={certification.url} className="link">
-                    <span className="gui-item-title">{certification.name}</span>
-                  </a>
-                ) : (
-                  <span className="gui-item-title">{certification.name}</span>
-                )}
-                <span> - {certification.issuer}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
         {activeTab === 'Contact' && (
           <div className="tab-content active">
-            <div className="gui-item" style={{ border: 'none', padding: 0, background: 'transparent' }}>
+            <div className="gui-item" style={{ border: 'none', padding: 0, background: 'transparent', marginBottom: '2rem' }}>
               <ContactFormDemo onExit={() => {}} />
+            </div>
+            <div className="gui-item">
+              <div className="gui-item-title">Email</div>
+              <a href={`mailto:${portfolioData.contact.email}`} className="link">{portfolioData.contact.email}</a>
             </div>
             <div className="gui-item">
               <div className="gui-item-title">LinkedIn</div>
@@ -207,17 +199,6 @@ export function GuiView({ activeTab, onTabChange, footerHtml }) {
             <div className="gui-item">
               <div className="gui-item-title">GitHub</div>
               <a href={portfolioData.contact.github} target="_blank" rel="noreferrer" className="link">{portfolioData.contact.github}</a>
-            </div>
-
-            <div className="gui-item">
-              <div className="gui-item-title">GitHub Activity</div>
-              <a href={portfolioData.contact.github} target="_blank" rel="noreferrer">
-                <img
-                  src="https://ghchart.rshah.org/5A6050/viccotermeric"
-                  alt="Rishabh Trivedi's GitHub contribution graph"
-                  className="github-contribution-graph"
-                />
-              </a>
             </div>
           </div>
         )}

@@ -113,6 +113,31 @@ export default function App() {
     localStorage.setItem('darkMode', String(darkMode));
   }, [darkMode]);
 
+  // Client-Side Security & Inspection Deterrence
+  useEffect(() => {
+    const handleContextMenu = (e) => e.preventDefault();
+    const handleKeyDown = (e) => {
+      // Prevent F12, Ctrl+Shift+I, Ctrl+Shift+C, Ctrl+Shift+J, Ctrl+U
+      if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) ||
+        (e.ctrlKey && e.key === 'U') ||
+        (e.metaKey && e.altKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) ||
+        (e.metaKey && e.shiftKey && (e.key === 'C' || e.key === 'I'))
+      ) {
+        e.preventDefault();
+      }
+    };
+    
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   useEffect(() => {
     applyTheme(currentTheme, darkMode);
   }, [currentTheme, darkMode]);
@@ -219,6 +244,34 @@ export default function App() {
       responseText = `Honestly, Persian Darbar. It pushed me to solve real deployment constraints and consistency issues under load.`;
     } else if (normalizedInput.includes('why hire me') || (normalizedInput.includes('hire') && normalizedInput.includes('you')) || normalizedInput.includes('strength')) {
       responseText = `I don't just write code that "works," I focus on making it robust and scalable. I like understanding system architectures, and my attention to lower-level details makes me a strong addition to any engineering team.`;
+    } else if (normalizedInput.includes('weakness') || normalizedInput.includes('fault')) {
+      responseText = `Sometimes I try to optimize O(1) operations. Honestly though, I get deeply invested in architecture and occasionally forget that simple solutions are best. (Rest assured, no un-indexed databases happen on my watch).`;
+    } else if (normalizedInput.includes('robot') || normalizedInput.includes('ai') || normalizedInput.includes('human')) {
+      responseText = `I’m 100% human, powered mostly by distributed cache states and existential dread over missing semicolons. I do build AI pipelines though, so the line is getting briefly blurry.`;
+    } else if (normalizedInput.includes('coffee') || normalizedInput.includes('tea') || normalizedInput.includes('drink')) {
+      responseText = `Coffee is the real tech stack. I consider caffeine to be an essential dependency for compiling complex backend systems.`;
+    } else if (normalizedInput.includes('favorite language') || normalizedInput.includes('best language')) {
+      responseText = `The one that pays the rent. (Kidding!) I love Python for its elegance in data routing, and JavaScript because building a literal OS terminal in a web browser is just too much fun.`;
+    } else if (normalizedInput.includes('sleep') || normalizedInput.includes('rest')) {
+      responseText = `I sleep normally. Unless the CI/CD pipeline breaks. Then sleep becomes a theoretical concept.`;
+    } else if (normalizedInput.includes('salary') || normalizedInput.includes('pay') || normalizedInput.includes('compensation') || normalizedInput.includes('expected')) {
+      responseText = `I'm deeply driven by complex engineering challenges and architecting scalable environments. But I also have an unfortunate habit of buying expensive mechanical keyboards, so standard market rates apply!`;
+    } else if (normalizedInput.includes('look like') || normalizedInput.includes('photo') || normalizedInput.includes('picture') || normalizedInput.includes('face') || normalizedInput.includes('image')) {
+      responseText = `This is me:<br><br><img src="/profile.png" alt="Rishabh" style="width:180px; height:180px; object-fit:cover; object-position:center; border-radius:12%; border:2px solid var(--color-accent); box-shadow:0 0 15px rgba(0,0,0,0.5); display:block; margin: 10px 0;" /><br>`;
+    } else if (normalizedInput.startsWith('ping ')) {
+      const target = normalizedInput.substring(5).trim();
+      responseText = `PING ${target} (192.168.1.1): 56 data bytes\n64 bytes from 192.168.1.1: icmp_seq=0 ttl=64 time=0.042 ms\n64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=0.038 ms\n64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=0.041 ms\n\n--- ${target} ping statistics ---\n3 packets transmitted, 3 packets received, 0% packet loss`;
+    } else if (normalizedInput === 'ping') {
+      responseText = "Usage: ping <destination>";
+    } else if (normalizedInput === 'ifconfig' || normalizedInput === 'ip a' || normalizedInput === 'ipconfig') {
+      responseText = `en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500\n\toptions=400<CHANNEL_IO>\n\tether b0:7d:64:5b:ea:11\n\tinet6 fe80::b27d:64ff:fe5b:ea11%en0 prefixlen 64 secured scopeid 0x4\n\tinet 192.168.1.104 netmask 0xffffff00 broadcast 192.168.1.255\n\tnd6 options=201<PERFORMNUD,DAD>\n\tmedia: autoselect\n\tstatus: active`;
+    } else if (normalizedInput === 'netstat') {
+      responseText = `Proto Recv-Q Send-Q  Local Address          Foreign Address        (state)\ntcp4       0      0  192.168.1.104.55132    104.244.42.193.443     ESTABLISHED\ntcp4       0      0  192.168.1.104.55134    142.250.217.110.443    ESTABLISHED\ntcp4       0      0  192.168.1.104.55160    github.com.443         ESTABLISHED`;
+    } else if (normalizedInput.startsWith('traceroute ')) {
+      const target = normalizedInput.substring(11).trim();
+      responseText = `traceroute to ${target} (93.184.216.34), 64 hops max, 52 byte packets\n 1  router.local (192.168.1.1)  2.132 ms  1.423 ms  1.332 ms\n 2  isp-gateway.local (10.0.0.1)  12.441 ms  13.220 ms  14.004 ms\n 3  core-router.isp.net (172.16.2.1)  24.112 ms  25.044 ms  26.772 ms\n 4  ${target} (93.184.216.34)  40.123 ms  41.521 ms  42.065 ms`;
+    } else if (normalizedInput === 'traceroute') {
+      responseText = "Usage: traceroute <host>";
     } else if (normalizedInput.includes('built this') || normalizedInput.includes('how did you make this') || normalizedInput.includes('framework')) {
       responseText = `This terminal portfolio is a custom React application. It manages everything as React components disguised as terminal outputs across a structured history state, plus EmailJS for secure local contact routing.`;
     } else {
@@ -362,7 +415,7 @@ export default function App() {
       return;
     }
 
-    if (normalizedFullInput === 'theme --list') {
+    if (normalizedFullInput === 'theme --list' || normalizedFullInput === 'theme') {
       recordCommand(userInput);
       setTerminalHistory((previous) => [
         ...previous,
@@ -374,7 +427,8 @@ export default function App() {
 
     const themeMatch = normalizedFullInput.match(/^theme\s+(\S+)$/);
     if (themeMatch) {
-      const themeKey = themeMatch[1];
+      let themeKey = themeMatch[1];
+      if (themeKey === 'default') themeKey = DEFAULT_THEME;
       recordCommand(userInput);
 
       if (THEMES[themeKey]) {
@@ -651,6 +705,7 @@ export default function App() {
           <div id="contact-icons-container">
               <div id="status-bar" className="flex items-center gap-4 ml-4">
                 <span id="site-name">Rishabh Trivedi</span>
+
                 <div id="clock">{clock}</div>
                 <div id="weather-display" className="flex items-center gap-2" title="Your Local Weather">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">

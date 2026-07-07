@@ -15,7 +15,7 @@ export function getBootEntry() {
   return makeOutputEntry(
     `Booting terminal v25.0.0...<br><br>` +
     `${selectedIntro}<br><br>` +
-    `Type <span class="command">'help'</span> to see what's here, or ask me conversational questions directly.`
+    `Type <span class="command">'help'</span> to explore, <span class="command">'theme'</span> for custom cosmetics, or ask conversational questions directly.`
   );
 }
 
@@ -53,7 +53,7 @@ export function buildThemeListHtml() {
 
 export function buildThemeAppliedHtml(themeKey) {
   const theme = THEMES[themeKey];
-  return `Theme set to <span class="command">${theme.name}</span>.`;
+  return `Theme changed successfully.<br>Current theme: <span class="command">${theme.name}</span>`;
 }
 
 function buildSysHelpHtml() {
@@ -86,14 +86,25 @@ function buildExperienceHtml() {
 
 function buildProjectsHtml() {
   let html = `<div class="skills-category-title">Projects</div>`;
-  html += portfolioData.projects.map(p => `<span class="command">projects ${p.slug}</span><br>${p.tech}`).join('<br><br>');
+  html += portfolioData.projects.map(p => {
+    const techString = Array.isArray(p.tech) ? p.tech.join(', ') : p.tech;
+    return `<span class="command">projects ${p.slug}</span><br>${techString}`;
+  }).join('<br><br>');
   return html + `<br><br>Type <span class="command">projects [name]</span> for full breakdown.`;
 }
 
 function buildProjectDetailHtml(name) {
   const p = portfolioData.projects.find(x => x.slug === name);
   if (p) {
-    let html = `<div class="skills-category-title">${p.name}</div><span class="command">Stack:</span> ${p.tech}<br><br>${p.desc.join('<br>')}<br><br>GitHub: <a href="${p.url}" target="_blank" class="link">${p.url}</a>`;
+    const techString = Array.isArray(p.tech) ? p.tech.join(', ') : p.tech;
+    let html = `<div class="skills-category-title">${p.name}</div><span class="command">Stack:</span> ${techString}<br><br>`;
+    
+    if (p.challenge) html += `<span class="command" style="opacity: 0.7; font-size: 0.8em; letter-spacing: 0.05em;">[CHALLENGE]</span><br>${p.challenge}<br><br>`;
+    if (p.solution) html += `<span class="command" style="opacity: 0.7; font-size: 0.8em; letter-spacing: 0.05em;">[SOLUTION]</span><br>${p.solution}<br><br>`;
+    if (p.result) html += `<span class="command" style="color:var(--color-accent); font-size: 0.8em; letter-spacing: 0.05em;">[RESULT]</span><br>${p.result}<br><br>`;
+    if (p.desc) html += `${p.desc.join('<br>')}<br><br>`;
+
+    html += `GitHub: <a href="${p.url}" target="_blank" class="link">${p.url}</a>`;
     if (p.liveUrl) html += `<br>Live: <a href="${p.liveUrl}" target="_blank" class="link">${p.liveUrl}</a>`;
     if (p.screenshots && p.screenshots.length > 0) {
         html += `<br><br><span class="command">Screenshots</span><br><div class="project-screenshots">`;
