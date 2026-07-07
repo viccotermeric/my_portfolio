@@ -131,6 +131,33 @@ function buildSudoHireHtml() {
   return `[sudo] password for hiring_manager: ••••••••<br><br>Available immediately.<br>Resume: <a href="${RESUME_URL}" target="_blank" rel="noreferrer" class="link">Resume.pdf</a>`;
 }
 
+function buildStatsHtml() {
+  return `<div class="skills-category-title">Languages:</div>` +
+    `<span style="color:var(--color-accent)">█████████</span> Python 85%<br>` +
+    `<span style="color:var(--color-accent)">███████</span> Java 70%<br>` +
+    `<span style="color:var(--color-accent)">█████</span> JavaScript 60%<br><br>` +
+    `<div class="skills-category-title">Frameworks & Tools:</div>` +
+    `<span style="color:var(--color-accent)">████████</span> React 80%<br>` +
+    `<span style="color:var(--color-accent)">██████</span> Node.js 65%<br>` +
+    `<span style="color:var(--color-accent)">█████</span> MySQL 60%<br>` +
+    `<span style="color:var(--color-accent)">████</span> AWS 40%`;
+}
+
+function buildWhoAmIHtml() {
+  return `Hi, I'm Rishabh Trivedi<br>` +
+    `Full Stack & AI Engineer<br>` +
+    `IT Diploma Graduate & Current B.E. Student<br>` +
+    `Interested in AI, Data Architecture & Full Stack Development`;
+}
+
+function buildTimelineHtml() {
+  return `<div class="skills-category-title">Timeline Explorer</div>` +
+  `2021 → Secondary School Certificate (SSC)<br>` +
+  `2022 → Started Diploma in IT<br>` +
+  `2024 → Python & MERN Stack Intern at Static.Int<br>` +
+  `2025 → B.E. in Computer Engineering`;
+}
+
 function buildAllHtml() {
   return [buildAboutHtml(), buildEducationHtml(), buildExperienceHtml(), buildProjectsHtml(), buildSkillsHtml(), buildResumeHtml(), buildContactHtml()].join('<br><br>');
 }
@@ -155,6 +182,9 @@ export function getCommandEntries(command) {
     case 'contact': return [makeOutputEntry(buildContactHtml())];
     case 'creator': return [makeOutputEntry(`<div class="creator-caption">Rishabh Trivedi — Software &amp; AI Engineer</div>`)];
     case 'sudo hire': return [makeOutputEntry(buildSudoHireHtml())];
+    case 'stats': return [makeOutputEntry(buildStatsHtml())];
+    case 'whoami': return [makeOutputEntry(buildWhoAmIHtml())];
+    case 'timeline': return [makeOutputEntry(buildTimelineHtml())];
     case 'all': return [makeOutputEntry(buildAllHtml())];
   }
 }

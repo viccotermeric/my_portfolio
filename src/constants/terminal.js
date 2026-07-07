@@ -184,6 +184,15 @@ export const COMMAND_NAMES = [
   'creator',
   'sudo hire',
   'decisions',
+  'stats',
+  'whoami',
+  'timeline',
+  'ls',
+  'pwd',
+  'cd',
+  'cat',
+  'echo',
+  'date',
   'all',
   'clear',
 ];
@@ -357,6 +366,21 @@ export const COMMAND_MANUALS = {
     usage: 'decisions',
     description:
       'Six concrete implementation decisions with alternatives considered and tradeoffs made — WASM constraints, Airflow task design, parallel agent execution, caching strategy.',
+  },
+  stats: {
+    summary: 'Show developer statistics.',
+    usage: 'stats',
+    description: 'Outputs language proficiency in an interactive progress bar style.',
+  },
+  whoami: {
+    summary: 'Shows a short introduction.',
+    usage: 'whoami',
+    description: 'Prints a brief overview of my identity, education, and interests.',
+  },
+  timeline: {
+    summary: 'Display my educational and professional timeline.',
+    usage: 'timeline',
+    description: 'Outputs a chronological ordering of my key experiences and academic milestones.',
   },
   all: {
     summary: 'Print all portfolio sections in sequence.',

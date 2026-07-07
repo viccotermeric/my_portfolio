@@ -57,7 +57,7 @@ import {
   buildThemeListHtml,
   getCommandEntries,
 } from './utils/terminalContent.js';
-import { makeCommandEntry, makeComponentEntry, makeOutputEntry, parseMarkdown } from './utils/terminalHelpers.js';
+import { makeCommandEntry, makeComponentEntry, makeOutputEntry, parseMarkdown, sanitizeHtml } from './utils/terminalHelpers.js';
 import { applyTheme, getSavedTheme } from './utils/themeUtils.js';
 
 function getSharedPrefix(matches) {
@@ -215,6 +215,12 @@ export default function App() {
       responseText = `My ultimate goal is to become a Data Architect or robust Full Stack Engineer.\n\nI want to work in an environment where intelligence and infrastructure naturally overlap—whether that means designing resilient ETL pipelines, optimizing cloud data warehouses, or architecting backend services that don't crumble when the user base scales.`;
     } else if (normalizedInput.includes('hobby') || normalizedInput.includes('fun') || normalizedInput.includes('free time')) {
       responseText = `Beyond building predictive models and fixing pipeline routing, I enjoy diving into hackathons, testing out new backend architectures, and continually challenging myself to learn lower-level systems. I believe that understanding the full stack—from database to browser—is the best way to spend free time.`;
+    } else if (normalizedInput.includes('favorite project') || (normalizedInput.includes('best') && normalizedInput.includes('project'))) {
+      responseText = `Honestly, Persian Darbar. It pushed me to solve real deployment constraints and consistency issues under load.`;
+    } else if (normalizedInput.includes('why hire me') || (normalizedInput.includes('hire') && normalizedInput.includes('you')) || normalizedInput.includes('strength')) {
+      responseText = `I don't just write code that "works," I focus on making it robust and scalable. I like understanding system architectures, and my attention to lower-level details makes me a strong addition to any engineering team.`;
+    } else if (normalizedInput.includes('built this') || normalizedInput.includes('how did you make this') || normalizedInput.includes('framework')) {
+      responseText = `This terminal portfolio is a custom React application. It manages everything as React components disguised as terminal outputs across a structured history state, plus EmailJS for secure local contact routing.`;
     } else {
       responseText = "ERROR: Unknown command.\n\nThis terminal only supports questions related to this portfolio.\n\nType \"help\" to see available commands.";
     }
@@ -401,6 +407,24 @@ export default function App() {
       commandEntries = [makeOutputEntry(buildManPageHtml(subject || 'man'))];
     } else if (normalizedInput === 'email' || normalizedInput === 'contact') {
       commandEntries = [makeComponentEntry('contact')];
+    } else if (normalizedInput === 'ls') {
+      commandEntries = [makeOutputEntry(`portfolio-data.js&nbsp;&nbsp;&nbsp;README.md&nbsp;&nbsp;&nbsp;resume.pdf`)];
+    } else if (normalizedInput === 'pwd') {
+      commandEntries = [makeOutputEntry(`/home/rishabh/portfolio`)];
+    } else if (normalizedInput === 'date') {
+      commandEntries = [makeOutputEntry(new Date().toString())];
+    } else if (normalizedInput === 'cd') {
+      const dir = args[0] || '~';
+      commandEntries = [makeOutputEntry(dir === '..' ? `bash: cd: permission denied` : `bash: cd: ${sanitizeHtml(dir)}: Not a directory`)];
+    } else if (normalizedInput === 'echo') {
+      commandEntries = [makeOutputEntry(sanitizeHtml(args.join(' ')))];
+    } else if (normalizedInput === 'cat') {
+      const file = args[0];
+      if (!file) commandEntries = [makeOutputEntry(`usage: cat [file]`)];
+      else if (file === 'README.md') commandEntries = [makeOutputEntry(`# Rishabh Trivedi Terminal<br><br>Welcome to my portfolio! Use 'help' to see commands.`)];
+      else if (file.includes('resume')) commandEntries = [makeOutputEntry(`Error: Binary file. Please use 'download resume' command instead.`)];
+      else if (file === 'portfolio-data.js') commandEntries = [makeOutputEntry(`cat: permission denied: portfolio-data.js is read-only.`)];
+      else commandEntries = [makeOutputEntry(`cat: ${sanitizeHtml(file)}: No such file or directory`)];
     } else {
       commandEntries = getCommandEntries(normalizedInput);
     }
