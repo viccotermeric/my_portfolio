@@ -59,6 +59,7 @@ import {
 } from './utils/terminalContent.js';
 import { makeCommandEntry, makeComponentEntry, makeOutputEntry, parseMarkdown, sanitizeHtml } from './utils/terminalHelpers.js';
 import { applyTheme, getSavedTheme } from './utils/themeUtils.js';
+import { getAssistantResponse } from './utils/nlpAssistant.js';
 
 function getSharedPrefix(matches) {
   return matches.reduce((prefix, command) => {
@@ -208,57 +209,7 @@ export default function App() {
     const normalizedInput = userInput.toLowerCase().trim();
     let responseText = '';
     
-    if (
-      normalizedInput.includes('who are you') || 
-      normalizedInput.includes('about') || 
-      normalizedInput.includes('yourself') ||
-      normalizedInput.includes('bio') ||
-      normalizedInput.includes('name') ||
-      normalizedInput === 'hi' ||
-      normalizedInput === 'hello' ||
-      normalizedInput.includes('hey')
-    ) {
-      responseText = "Hi, I'm Rishabh Trivedi.\n\n" + portfolioData.about;
-    } else if (normalizedInput.includes('skill') || normalizedInput.includes('technolog') || normalizedInput.includes('tech stack') || normalizedInput.includes('learning')) {
-      responseText = "My setup:\n\n" + Object.entries(portfolioData.skills).map(([cat, skills]) => `- **${cat}**: ${skills.join(', ')}`).join('\n');
-    } else if (normalizedInput.includes('project')) {
-      responseText = portfolioData.projects.map(p => `**${p.name}**\n${p.tech}\n${p.desc[0]}`).join('\n\n');
-    } else if (normalizedInput.includes('experience')) {
-      responseText = portfolioData.experience.map(e => `**${e.role}** at ${e.company} (${e.period})\n${e.desc[0]}`).join('\n\n');
-    } else if (normalizedInput.includes('education')) {
-      responseText = portfolioData.education.map(e => `**${e.degree}**\n${e.school}\n${e.details}`).join('\n\n');
-    } else if (normalizedInput.includes('achievement') || normalizedInput.includes('certification')) {
-      responseText = "My recent focus has been building functional projects rather than collecting certifications, but my academic track gives me a strong technical base in data structures and systems.";
-    } else if (normalizedInput.includes('resume')) {
-      triggerResumeDownload(RESUME_URL);
-      responseText = `Downloading...<br>Direct link: <a href="${RESUME_URL}" class="link">Rishabh Trivedi Resume</a>`;
-    } else if (normalizedInput.includes('contact') || normalizedInput.includes('github') || normalizedInput.includes('linkedin') || normalizedInput.includes('email') || normalizedInput.includes('location') || normalizedInput.includes('hire')) {
-      responseText = `Email: ${portfolioData.contact.email}\nLinkedIn: ${portfolioData.contact.linkedin}\nGitHub: ${portfolioData.contact.github}\nLocation: Mumbai, India`;
-    } else if (normalizedInput.includes('why') && (normalizedInput.includes('choose') || normalizedInput.includes('data') || normalizedInput.includes('tech') || normalizedInput.includes('coding') || normalizedInput.includes('field'))) {
-      responseText = `I didn't just want to build frontends that looked pretty. I wanted to understand how the data driving them actually moved.\n\nWorking on projects like Persian Darbar and VEDA AI taught me that the hardest problems aren't usually UI bugs—they're race conditions, data inconsistencies, and slow queries. I chose this field because I care about the infrastructure underneath the application. I want to build systems that scale reliably under pressure.`;
-    } else if (normalizedInput.includes('want to be') || normalizedInput.includes('future') || normalizedInput.includes('goal') || normalizedInput.includes('looking for')) {
-      responseText = `My ultimate goal is to become a Data Architect or robust Full Stack Engineer.\n\nI want to work in an environment where intelligence and infrastructure naturally overlap—whether that means designing resilient ETL pipelines, optimizing cloud data warehouses, or architecting backend services that don't crumble when the user base scales.`;
-    } else if (normalizedInput.includes('hobby') || normalizedInput.includes('fun') || normalizedInput.includes('free time')) {
-      responseText = `Beyond building predictive models and fixing pipeline routing, I enjoy diving into hackathons, testing out new backend architectures, and continually challenging myself to learn lower-level systems. I believe that understanding the full stack—from database to browser—is the best way to spend free time.`;
-    } else if (normalizedInput.includes('favorite project') || (normalizedInput.includes('best') && normalizedInput.includes('project'))) {
-      responseText = `Honestly, Persian Darbar. It pushed me to solve real deployment constraints and consistency issues under load.`;
-    } else if (normalizedInput.includes('why hire me') || (normalizedInput.includes('hire') && normalizedInput.includes('you')) || normalizedInput.includes('strength')) {
-      responseText = `I don't just write code that "works," I focus on making it robust and scalable. I like understanding system architectures, and my attention to lower-level details makes me a strong addition to any engineering team.`;
-    } else if (normalizedInput.includes('weakness') || normalizedInput.includes('fault')) {
-      responseText = `Sometimes I try to optimize O(1) operations. Honestly though, I get deeply invested in architecture and occasionally forget that simple solutions are best. (Rest assured, no un-indexed databases happen on my watch).`;
-    } else if (normalizedInput.includes('robot') || normalizedInput.includes('ai') || normalizedInput.includes('human')) {
-      responseText = `I’m 100% human, powered mostly by distributed cache states and existential dread over missing semicolons. I do build AI pipelines though, so the line is getting briefly blurry.`;
-    } else if (normalizedInput.includes('coffee') || normalizedInput.includes('tea') || normalizedInput.includes('drink')) {
-      responseText = `Coffee is the real tech stack. I consider caffeine to be an essential dependency for compiling complex backend systems.`;
-    } else if (normalizedInput.includes('favorite language') || normalizedInput.includes('best language')) {
-      responseText = `The one that pays the rent. (Kidding!) I love Python for its elegance in data routing, and JavaScript because building a literal OS terminal in a web browser is just too much fun.`;
-    } else if (normalizedInput.includes('sleep') || normalizedInput.includes('rest')) {
-      responseText = `I sleep normally. Unless the CI/CD pipeline breaks. Then sleep becomes a theoretical concept.`;
-    } else if (normalizedInput.includes('salary') || normalizedInput.includes('pay') || normalizedInput.includes('compensation') || normalizedInput.includes('expected')) {
-      responseText = `I'm deeply driven by complex engineering challenges and architecting scalable environments. But I also have an unfortunate habit of buying expensive mechanical keyboards, so standard market rates apply!`;
-    } else if (normalizedInput.includes('look like') || normalizedInput.includes('photo') || normalizedInput.includes('picture') || normalizedInput.includes('face') || normalizedInput.includes('image')) {
-      responseText = `This is me:<br><br><img src="/profile.png" alt="Rishabh" style="width:180px; height:180px; object-fit:cover; object-position:center; border-radius:12%; border:2px solid var(--color-accent); box-shadow:0 0 15px rgba(0,0,0,0.5); display:block; margin: 10px 0;" /><br>`;
-    } else if (normalizedInput.startsWith('ping ')) {
+    if (normalizedInput.startsWith('ping ')) {
       const target = normalizedInput.substring(5).trim();
       responseText = `PING ${target} (192.168.1.1): 56 data bytes\n64 bytes from 192.168.1.1: icmp_seq=0 ttl=64 time=0.042 ms\n64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=0.038 ms\n64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=0.041 ms\n\n--- ${target} ping statistics ---\n3 packets transmitted, 3 packets received, 0% packet loss`;
     } else if (normalizedInput === 'ping') {
@@ -272,10 +223,11 @@ export default function App() {
       responseText = `traceroute to ${target} (93.184.216.34), 64 hops max, 52 byte packets\n 1  router.local (192.168.1.1)  2.132 ms  1.423 ms  1.332 ms\n 2  isp-gateway.local (10.0.0.1)  12.441 ms  13.220 ms  14.004 ms\n 3  core-router.isp.net (172.16.2.1)  24.112 ms  25.044 ms  26.772 ms\n 4  ${target} (93.184.216.34)  40.123 ms  41.521 ms  42.065 ms`;
     } else if (normalizedInput === 'traceroute') {
       responseText = "Usage: traceroute <host>";
-    } else if (normalizedInput.includes('built this') || normalizedInput.includes('how did you make this') || normalizedInput.includes('framework')) {
-      responseText = `This terminal portfolio is a custom React application. It manages everything as React components disguised as terminal outputs across a structured history state, plus EmailJS for secure local contact routing.`;
     } else {
-      responseText = "ERROR: Unknown command.\n\nThis terminal only supports questions related to this portfolio.\n\nType \"help\" to see available commands.";
+      responseText = getAssistantResponse(userInput);
+      if (responseText.includes('Downloading...')) {
+        triggerResumeDownload(RESUME_URL);
+      }
     }
 
     let parsedHtml = responseText;

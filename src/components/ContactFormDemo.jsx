@@ -28,74 +28,75 @@ export function ContactFormDemo({ onExit }) {
     return re.test(email);
   };
 
+  const handleSubmitFlow = async (e) => {
+    e.preventDefault();
+    const val = inputValue.trim();
+    
+    if (step === 'name') {
+      if (!val) {
+        setErrorLine('Name is required.');
+        return;
+      }
+      setHistory(prev => [...prev, { prompt: 'Name:', value: val }]);
+      setFormData(prev => ({ ...prev, name: val }));
+      setStep('email');
+      setInputValue('');
+      setErrorLine('');
+    } else if (step === 'email') {
+      if (!val || !validateEmail(val)) {
+        setErrorLine('Please enter a valid email address.');
+        return;
+      }
+      setHistory(prev => [...prev, { prompt: 'Email:', value: val }]);
+      setFormData(prev => ({ ...prev, email: val }));
+      setStep('message');
+      setInputValue('');
+      setErrorLine('');
+    } else if (step === 'message') {
+      if (!val) {
+        setErrorLine('Message cannot be empty.');
+        return;
+      }
+      setHistory(prev => [...prev, { prompt: 'Message:', value: val }]);
+      setFormData(prev => ({ ...prev, message: val }));
+      setStep('sending');
+      setInputValue('');
+      setErrorLine('');
+      
+      // Send via EmailJS
+      try {
+        const finalName = formData.name;
+        const finalEmail = formData.email;
+        const finalMessage = val;
+
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          {
+            from_name: finalName,
+            from_email: finalEmail,
+            message: finalMessage,
+            to_name: 'Rishabh'
+          },
+          EMAILJS_PUBLIC_KEY
+        );
+        setStep('success');
+      } catch (err) {
+        console.error('EmailJS error:', err);
+        setStep('error');
+      }
+      
+      setTimeout(() => {
+        onExit();
+      }, 1800);
+    }
+  };
+
   const handleKeyDown = async (e) => {
+    e.stopPropagation(); // Prevent terminal window listener from accidentally stealing focus on mobile
     if (e.key === 'c' && e.ctrlKey) {
       onExit();
       return;
-    }
-    
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      const val = inputValue.trim();
-      
-      if (step === 'name') {
-        if (!val) {
-          setErrorLine('Name is required.');
-          return;
-        }
-        setHistory(prev => [...prev, { prompt: 'Name:', value: val }]);
-        setFormData(prev => ({ ...prev, name: val }));
-        setStep('email');
-        setInputValue('');
-        setErrorLine('');
-      } else if (step === 'email') {
-        if (!val || !validateEmail(val)) {
-          setErrorLine('Please enter a valid email address.');
-          return;
-        }
-        setHistory(prev => [...prev, { prompt: 'Email:', value: val }]);
-        setFormData(prev => ({ ...prev, email: val }));
-        setStep('message');
-        setInputValue('');
-        setErrorLine('');
-      } else if (step === 'message') {
-        if (!val) {
-          setErrorLine('Message cannot be empty.');
-          return;
-        }
-        setHistory(prev => [...prev, { prompt: 'Message:', value: val }]);
-        setFormData(prev => ({ ...prev, message: val }));
-        setStep('sending');
-        setInputValue('');
-        setErrorLine('');
-        
-        // Send via EmailJS
-        try {
-          const finalName = formData.name;
-          const finalEmail = formData.email;
-          const finalMessage = val;
-
-          await emailjs.send(
-            EMAILJS_SERVICE_ID,
-            EMAILJS_TEMPLATE_ID,
-            {
-              from_name: finalName,
-              from_email: finalEmail,
-              message: finalMessage,
-              to_name: 'Rishabh'
-            },
-            EMAILJS_PUBLIC_KEY
-          );
-          setStep('success');
-        } catch (err) {
-          console.error('EmailJS error:', err);
-          setStep('error');
-        }
-        
-        setTimeout(() => {
-          onExit();
-        }, 1800);
-      }
     }
   };
 
@@ -140,13 +141,14 @@ export function ContactFormDemo({ onExit }) {
       )}
 
       {(step === 'name' || step === 'email' || step === 'message') && (
-        <div className="flex">
-          <span style={{ color: 'var(--color-secondary)' }} className="mr-2">
+        <form onSubmit={handleSubmitFlow} className="flex">
+          <span style={{ color: 'var(--color-secondary)' }} className="mr-2 whitespace-nowrap">
             {step === 'name' ? 'Name:' : step === 'email' ? 'Email:' : 'Message:'}
           </span>
           <input
             ref={inputRef}
-            type="text"
+            type={step === 'email' ? 'email' : 'text'}
+            enterKeyHint={step === 'message' ? 'send' : 'next'}
             className="flex-grow bg-transparent border-none outline-none font-mono"
             style={{ color: 'inherit' }}
             value={inputValue}
@@ -155,7 +157,7 @@ export function ContactFormDemo({ onExit }) {
             autoComplete="off"
             spellCheck="false"
           />
-        </div>
+        </form>
       )}
       
       {(step === 'name' || step === 'email' || step === 'message') && (
