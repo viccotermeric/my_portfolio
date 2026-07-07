@@ -263,7 +263,7 @@ export default function App() {
       responseText = `PING ${target} (192.168.1.1): 56 data bytes\n64 bytes from 192.168.1.1: icmp_seq=0 ttl=64 time=0.042 ms\n64 bytes from 192.168.1.1: icmp_seq=1 ttl=64 time=0.038 ms\n64 bytes from 192.168.1.1: icmp_seq=2 ttl=64 time=0.041 ms\n\n--- ${target} ping statistics ---\n3 packets transmitted, 3 packets received, 0% packet loss`;
     } else if (normalizedInput === 'ping') {
       responseText = "Usage: ping <destination>";
-    } else if (normalizedInput === 'ifconfig' || normalizedInput === 'ip a' || normalizedInput === 'ipconfig') {
+    } else if (normalizedInput === 'ifconfig' || normalizedInput === 'if config' || normalizedInput === 'ip a' || normalizedInput === 'ipconfig' || normalizedInput === 'ip config') {
       responseText = `en0: flags=8863<UP,BROADCAST,SMART,RUNNING,SIMPLEX,MULTICAST> mtu 1500\n\toptions=400<CHANNEL_IO>\n\tether b0:7d:64:5b:ea:11\n\tinet6 fe80::b27d:64ff:fe5b:ea11%en0 prefixlen 64 secured scopeid 0x4\n\tinet 192.168.1.104 netmask 0xffffff00 broadcast 192.168.1.255\n\tnd6 options=201<PERFORMNUD,DAD>\n\tmedia: autoselect\n\tstatus: active`;
     } else if (normalizedInput === 'netstat') {
       responseText = `Proto Recv-Q Send-Q  Local Address          Foreign Address        (state)\ntcp4       0      0  192.168.1.104.55132    104.244.42.193.443     ESTABLISHED\ntcp4       0      0  192.168.1.104.55134    142.250.217.110.443    ESTABLISHED\ntcp4       0      0  192.168.1.104.55160    github.com.443         ESTABLISHED`;
@@ -415,7 +415,7 @@ export default function App() {
       return;
     }
 
-    if (normalizedFullInput === 'theme --list' || normalizedFullInput === 'theme') {
+    if (normalizedFullInput === 'theme --list' || normalizedFullInput === 'theme' || normalizedFullInput === 'thme') {
       recordCommand(userInput);
       setTerminalHistory((previous) => [
         ...previous,
@@ -425,10 +425,12 @@ export default function App() {
       return;
     }
 
-    const themeMatch = normalizedFullInput.match(/^theme\s+(\S+)$/);
+    const themeMatch = normalizedFullInput.match(/^(?:theme|thme)\s+(\S+)$/);
     if (themeMatch) {
       let themeKey = themeMatch[1];
-      if (themeKey === 'default') themeKey = DEFAULT_THEME;
+      
+      // Enforce lower bounds safety for exact template strings
+      if (themeKey === 'default') themeKey = 'default';
       recordCommand(userInput);
 
       if (THEMES[themeKey]) {

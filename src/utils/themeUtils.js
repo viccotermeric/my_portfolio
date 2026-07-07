@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, THEMES } from '../constants/terminal.js';
+import { THEMES } from '../constants/terminal.js';
 
 export function applyTheme(themeKey, darkMode) {
   const root = document.documentElement;
@@ -16,5 +16,5 @@ export function applyTheme(themeKey, darkMode) {
 }
 
 export function getSavedTheme() {
-  return DEFAULT_THEME;
+  return 'default';
 }
