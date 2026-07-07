@@ -399,6 +399,8 @@ export default function App() {
       const joinedSubject = args.join(' ').trim().toLowerCase();
       const subject = joinedSubject || args[0]?.toLowerCase();
       commandEntries = [makeOutputEntry(buildManPageHtml(subject || 'man'))];
+    } else if (normalizedInput === 'email' || normalizedInput === 'contact') {
+      commandEntries = [makeComponentEntry('contact')];
     } else {
       commandEntries = getCommandEntries(normalizedInput);
     }
@@ -601,6 +603,16 @@ export default function App() {
     playSound(880, 'sine', 0.08, 0.2);
   }
 
+  const handleSocialEmailClick = () => {
+    if (terminalMode) {
+      setTerminalHistory((prev) => [...prev, makeCommandEntry('email'), makeComponentEntry('contact')]);
+       window.setTimeout(() => {
+        terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+      }, 50);
+    } else {
+      setActiveTab('Contact');
+    }
+  };
 
   return (
     <>
@@ -634,6 +646,7 @@ export default function App() {
               }}
               terminalMode={terminalMode}
               highlightToggle={showGuiHint}
+              onEmailClick={handleSocialEmailClick}
             />
           </div>
         </div>
@@ -645,7 +658,7 @@ export default function App() {
             className="w-full rounded-lg shadow-2xl shadow-stone-500/20 p-4 flex flex-col"
             onClick={(event) => {
               initAudio();
-              if (event.target.tagName.toLowerCase() !== 'a') {
+              if (event.target.tagName.toLowerCase() !== 'a' && !event.target.closest('.shell-demo, .thread-demo, .alloc-demo')) {
                 inputRef.current?.focus();
               }
             }}

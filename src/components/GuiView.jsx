@@ -1,6 +1,7 @@
 import { portfolioData } from '../../portfolio-data.js';
 import { EMAIL_HREF } from '../constants/terminal.js';
 import { formatBreaks } from '../utils/terminalHelpers.js';
+import { ContactFormDemo } from './ContactFormDemo.jsx';
 
 const PRIMARY_TABS = ['About', 'Experience', 'Projects', 'Skills', 'Contact'];
 const SECONDARY_TABS = ['Education'];
@@ -196,9 +197,8 @@ export function GuiView({ activeTab, onTabChange, footerHtml }) {
 
         {activeTab === 'Contact' && (
           <div className="tab-content active">
-            <div className="gui-item">
-              <div className="gui-item-title">Email</div>
-              <a href={EMAIL_HREF} target="_blank" rel="noreferrer" className="link">{portfolioData.contact.email}</a>
+            <div className="gui-item" style={{ border: 'none', padding: 0, background: 'transparent' }}>
+              <ContactFormDemo onExit={() => {}} />
             </div>
             <div className="gui-item">
               <div className="gui-item-title">LinkedIn</div>

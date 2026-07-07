@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { PROMPT_TEXT } from '../constants/terminal.js';
 import { ShellDemo } from './ShellDemo.jsx';
 import { ThreadDemo } from './ThreadDemo.jsx';
+import { ContactFormDemo } from './ContactFormDemo.jsx';
 
 const AllocDemo = lazy(() => import('./AllocDemo.jsx').then((module) => ({ default: module.AllocDemo })));
 
@@ -42,6 +43,14 @@ export function TerminalEntry({ entry, onShellExit }) {
       return (
         <div className="output-entry">
           <ThreadDemo onExit={onShellExit} {...entry.props} />
+        </div>
+      );
+    }
+
+    if (entry.componentName === 'contact') {
+      return (
+        <div className="output-entry">
+          <ContactFormDemo onExit={onShellExit} />
         </div>
       );
     }
